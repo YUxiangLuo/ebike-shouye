@@ -1,0 +1,469 @@
+/**
+ * Custom Animations CSS
+ * Keyframe animations and transition utilities
+ *
+ * Contents:
+ * 1. Keyframe Animations
+ * 2. Transition Classes
+ * 3. Hover Effects
+ * 4. Animation Utilities
+ */
+
+/* ============================================
+   1. KEYFRAME ANIMATIONS
+   ============================================ */
+
+/* Marquee (Infinite Scroll for Ticker) */
+@keyframes custom-marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.custom-animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: custom-marquee 30s linear infinite;
+}
+
+.custom-animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Fade In */
+@keyframes custom-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.custom-animate-fade-in {
+  animation: custom-fade-in 1s ease-in-out;
+}
+
+/* Fade In Up */
+@keyframes custom-fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.custom-animate-fade-in-up {
+  animation: custom-fade-in-up 0.8s ease-out;
+}
+
+/* Fade In Down */
+@keyframes custom-fade-in-down {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.custom-animate-fade-in-down {
+  animation: custom-fade-in-down 0.8s ease-out;
+}
+
+/* Slide In Right */
+@keyframes custom-slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.custom-animate-slide-in-right {
+  animation: custom-slide-in-right 0.6s ease-out;
+}
+
+/* Slide In Left */
+@keyframes custom-slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.custom-animate-slide-in-left {
+  animation: custom-slide-in-left 0.6s ease-out;
+}
+
+/* Scale In */
+@keyframes custom-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.custom-animate-scale-in {
+  animation: custom-scale-in 0.4s ease-out;
+}
+
+/* Pulse */
+@keyframes custom-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.custom-animate-pulse {
+  animation: custom-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Spin */
+@keyframes custom-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.custom-animate-spin {
+  animation: custom-spin 1s linear infinite;
+}
+
+/* Bounce */
+@keyframes custom-bounce {
+  0%, 100% {
+    transform: translateY(-25%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+.custom-animate-bounce {
+  animation: custom-bounce 1s infinite;
+}
+
+/* Shake */
+@keyframes custom-shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-10px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(10px);
+  }
+}
+
+.custom-animate-shake {
+  animation: custom-shake 0.5s;
+}
+
+/* ============================================
+   2. TRANSITION CLASSES
+   ============================================ */
+
+/* Base Transitions */
+.custom-transition {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+.custom-transition-fast {
+  transition-duration: 150ms;
+}
+
+.custom-transition-slow {
+  transition-duration: 500ms;
+}
+
+.custom-transition-slower {
+  transition-duration: 700ms;
+}
+
+/* Specific Property Transitions */
+.custom-transition-opacity {
+  transition-property: opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+.custom-transition-transform {
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+.custom-transition-colors {
+  transition-property: color, background-color, border-color;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+.custom-transition-shadow {
+  transition-property: box-shadow;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+/* Combined Transitions */
+.custom-transition-all {
+  transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hero specific - slow opacity transition */
+.custom-transition-opacity-slow {
+  transition: opacity 1000ms ease-in-out;
+}
+
+/* Image zoom transition */
+.custom-transition-image-zoom {
+  transition: transform 700ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================
+   3. HOVER EFFECTS
+   ============================================ */
+
+/* Scale on Hover */
+.custom-hover-scale:hover {
+  transform: scale(1.05);
+}
+
+.custom-hover-scale-sm:hover {
+  transform: scale(1.02);
+}
+
+.custom-hover-scale-lg:hover {
+  transform: scale(1.1);
+}
+
+/* Image Zoom on Parent Hover */
+.custom-group:hover .custom-group-hover-scale {
+  transform: scale(1.1);
+}
+
+.custom-group:hover .custom-group-hover-scale-lg {
+  transform: scale(1.15);
+}
+
+/* Shadow on Hover */
+.custom-hover-shadow:hover {
+  box-shadow: var(--custom-shadow-lg);
+}
+
+.custom-hover-shadow-xl:hover {
+  box-shadow: var(--custom-shadow-xl);
+}
+
+.custom-hover-shadow-2xl:hover {
+  box-shadow: var(--custom-shadow-2xl);
+}
+
+/* Opacity on Hover */
+.custom-hover-opacity-80:hover {
+  opacity: 0.8;
+}
+
+.custom-hover-opacity-60:hover {
+  opacity: 0.6;
+}
+
+/* Translate on Hover */
+.custom-hover-translate-y:hover {
+  transform: translateY(-5px);
+}
+
+.custom-hover-translate-x:hover {
+  transform: translateX(5px);
+}
+
+/* Color Change on Hover */
+.custom-hover-primary:hover {
+  color: var(--custom-color-primary);
+}
+
+.custom-hover-bg-primary:hover {
+  background-color: var(--custom-color-primary);
+}
+
+/* Active/Press State */
+.custom-active-scale:active {
+  transform: scale(0.95);
+}
+
+.custom-active-scale-sm:active {
+  transform: scale(0.98);
+}
+
+/* Group Hover States */
+.custom-group {
+  position: relative;
+}
+
+.custom-group:hover .custom-group-hover-visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.custom-group .custom-group-hover-visible {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 300ms, visibility 300ms;
+}
+
+/* ============================================
+   4. ANIMATION UTILITIES
+   ============================================ */
+
+/* Animation Delays */
+.custom-animation-delay-100 {
+  animation-delay: 100ms;
+}
+
+.custom-animation-delay-200 {
+  animation-delay: 200ms;
+}
+
+.custom-animation-delay-300 {
+  animation-delay: 300ms;
+}
+
+.custom-animation-delay-500 {
+  animation-delay: 500ms;
+}
+
+.custom-animation-delay-700 {
+  animation-delay: 700ms;
+}
+
+/* Animation Duration Utilities */
+.custom-animation-duration-fast {
+  animation-duration: 150ms;
+}
+
+.custom-animation-duration-normal {
+  animation-duration: 300ms;
+}
+
+.custom-animation-duration-slow {
+  animation-duration: 500ms;
+}
+
+.custom-animation-duration-slower {
+  animation-duration: 1000ms;
+}
+
+/* Animation Fill Mode */
+.custom-animation-fill-forwards {
+  animation-fill-mode: forwards;
+}
+
+.custom-animation-fill-backwards {
+  animation-fill-mode: backwards;
+}
+
+.custom-animation-fill-both {
+  animation-fill-mode: both;
+}
+
+/* Animation Play State */
+.custom-animation-paused {
+  animation-play-state: paused;
+}
+
+.custom-animation-running {
+  animation-play-state: running;
+}
+
+/* Disable Animations for Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .custom-animate-marquee {
+    animation: none;
+  }
+}
+
+/* ============================================
+   5. LOADING & SKELETON ANIMATIONS
+   ============================================ */
+
+/* Skeleton Loading */
+@keyframes custom-skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.custom-skeleton {
+  background: linear-gradient(
+    90deg,
+    #f0f0f0 0%,
+    #e0e0e0 20%,
+    #f0f0f0 40%,
+    #f0f0f0 100%
+  );
+  background-size: 200% 100%;
+  animation: custom-skeleton-loading 1.5s ease-in-out infinite;
+}
+
+/* Shimmer Effect */
+@keyframes custom-shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.custom-shimmer {
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 100%
+  );
+  background-size: 1000px 100%;
+  animation: custom-shimmer 2s infinite;
+}
