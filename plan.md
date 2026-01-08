@@ -661,7 +661,7 @@ shopify_theme/
 ### 第 2 天: 数据驱动型 Sections (Part 1)
 1. ✅ 开发 `best-sellers-custom.liquid` **[DONE - 2026-01-09]**
 2. ✅ 实现颜色切换 JavaScript (`custom-product-card.js`) **[DONE - 2026-01-09]**
-3. ⏳ 开发 `categories-custom.liquid`
+3. ✅ 开发 `categories-custom.liquid` **[DONE - 2026-01-09]**
 4. ⏳ 测试 Shopify 数据获取
 
 ### 第 3 天: 数据驱动型 Sections (Part 2) + 静态 Sections
@@ -758,7 +758,7 @@ shopify_theme/
 
 - [x] **Milestone 1**: 基础设施搭建完成（CSS/JS 框架） ✅ **2026-01-09**
 - [x] **Milestone 2**: 可配置型 Sections 完成（Hero, Ticker, Christmas） ✅ **2026-01-09** - **3/3 完成**
-- [ ] **Milestone 3**: 数据驱动型 Sections 完成（Best Sellers, Categories, Blog）
+- [ ] **Milestone 3**: 数据驱动型 Sections 完成（Best Sellers, Categories, Blog） - **2/3 完成**
 - [ ] **Milestone 4**: 静态内容型 Sections 完成（剩余 4 个）
 - [ ] **Milestone 5**: 集成测试通过 + 首页上线
 
@@ -781,4 +781,5 @@ shopify_theme/
 - 🎯 **Milestone 2 完成**: 3个可配置型sections全部完成 (Hero, Ticker, Christmas)
 - ✅ 完成 Best Sellers Custom section (产品集合展示, 颜色切换, 拖拽滚动)
 - ✅ 创建 custom-product-card.js (颜色切换 + 移动端拖拽滚动)
-- 📊 进度：4/10 sections 完成 (40%)
+- ✅ 完成 Categories Custom section (分类网格, blocks配置, 响应式布局)
+- 📊 进度：5/10 sections 完成 (50%)

@@ -1,0 +1,198 @@
+{% comment %}
+  Categories Custom - Shop by category grid
+
+  Features:
+  - Responsive grid layout (2 cols mobile → 3 cols tablet → 6 cols desktop)
+  - Configurable categories via blocks (up to 8)
+  - Square aspect ratio with rounded corners
+  - Hover effects: shadow enhancement + image zoom
+  - Custom image or collection image fallback
+  - Custom title or collection title fallback
+  - Links to collection pages
+{% endcomment %}
+
+<section class="py-12 md:py-20 px-4 md:px-10 lg:px-12 max-w-[var(--custom-container-max-width)] mx-auto">
+
+  {%- comment -%} Section Title {%- endcomment -%}
+  {%- if section.settings.title != blank -%}
+    <h2 class="text-[24px] md:text-[36px] font-black text-[#1a1a1a] mb-8 md:mb-12 tracking-tight"
+        style="font-family: var(--font-heading-family);">
+      {{ section.settings.title }}
+    </h2>
+  {%- endif -%}
+
+  {%- comment -%} Categories Grid {%- endcomment -%}
+  <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-8">
+
+    {%- comment -%} Category Loop {%- endcomment -%}
+    {%- for block in section.blocks -%}
+      {%- liquid
+        # Get collection from block settings
+        assign collection_handle = block.settings.collection
+        assign category_collection = collections[collection_handle]
+
+        # Determine image: custom image or collection image
+        if block.settings.image != blank
+          assign category_image = block.settings.image
+        elsif category_collection.image != blank
+          assign category_image = category_collection.image
+        else
+          assign category_image = null
+        endif
+
+        # Determine title: custom title or collection title
+        if block.settings.title != blank
+          assign category_title = block.settings.title
+        elsif category_collection.title != blank
+          assign category_title = category_collection.title
+        else
+          assign category_title = 'Category'
+        endif
+
+        # Determine link: collection URL
+        if category_collection.url != blank
+          assign category_url = category_collection.url
+        else
+          assign category_url = '#'
+        endif
+      -%}
+
+      <div class="group cursor-pointer flex flex-col items-center"
+           {{ block.shopify_attributes }}>
+
+        {%- comment -%} Category Image Card {%- endcomment -%}
+        <a href="{{ category_url }}"
+           class="w-full aspect-square rounded-[var(--custom-radius-2xl)] overflow-hidden bg-[#f5f5f5] mb-6 shadow-sm group-hover:shadow-xl transition-all duration-500"
+           aria-label="{{ category_title | escape }}">
+
+          {%- if category_image != null -%}
+            <img
+              src="{{ category_image | image_url: width: 600 }}"
+              srcset="{{ category_image | image_url: width: 300 }} 300w,
+                      {{ category_image | image_url: width: 600 }} 600w"
+              sizes="(min-width: 1024px) 250px, (min-width: 640px) 33vw, 50vw"
+              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+              alt="{{ category_title | escape }}"
+              loading="lazy"
+            />
+          {%- else -%}
+            {%- comment -%} Placeholder if no image {%- endcomment -%}
+            <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
+              <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </div>
+          {%- endif -%}
+        </a>
+
+        {%- comment -%} Category Title {%- endcomment -%}
+        <a href="{{ category_url }}"
+           class="font-extrabold text-base md:text-lg text-[#1a1a1a] tracking-tight group-hover:text-[var(--custom-color-primary-light)] transition-colors">
+          {{ category_title }}
+        </a>
+      </div>
+
+    {%- endfor -%}
+
+    {%- comment -%} No Categories Message {%- endcomment -%}
+    {%- if section.blocks.size == 0 -%}
+      <div class="col-span-full text-center py-12 text-gray-500">
+        <p class="text-lg font-bold mb-2">No categories configured</p>
+        <p class="text-sm">Add category blocks in the theme customizer to display them here.</p>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Categories Custom",
+  "tag": "section",
+  "class": "categories-custom-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section title",
+      "default": "Shop by category"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category",
+      "limit": 8,
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection",
+          "info": "Select a collection for this category"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Custom image (optional)",
+          "info": "If not provided, will use collection's featured image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Custom title (optional)",
+          "info": "If not provided, will use collection's title"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Categories Custom",
+      "settings": {
+        "title": "Shop by category"
+      },
+      "blocks": [
+        {
+          "type": "category",
+          "settings": {
+            "title": "City E-Bike"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Foldable E-Bike"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Fat Tire E-Bike"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Cargo E-Bike"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Gear"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Sale"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
