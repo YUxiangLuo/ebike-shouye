@@ -1,0 +1,369 @@
+{% comment %}
+  Best Sellers Custom - Product showcase with color switching
+
+  Features:
+  - Displays best-selling products from a collection
+  - Mobile: horizontal scroll with drag functionality
+  - Desktop: 6-column grid layout
+  - Color swatch switching (updates product image)
+  - Discount badge calculation
+  - Shipping date from product metafield
+  - Policy footer (warranty, returns)
+  - Responsive card design
+
+  Required Metafields:
+  - product.metafields.custom.shipping_date (single_line_text) - e.g., "within 24-hour" or "November 10"
+{% endcomment %}
+
+<section class="py-12 md:py-20 px-4 md:px-8 lg:px-10 xl:px-12 max-w-[var(--custom-container-max-width)] mx-auto bg-white overflow-hidden select-none"
+         data-best-sellers>
+
+  {%- comment -%} Section Header {%- endcomment -%}
+  <div class="flex items-center justify-between mb-8 md:mb-12">
+    {%- if section.settings.title != blank -%}
+      <h2 class="text-[24px] md:text-[36px] font-black text-[#1a1a1a] tracking-tight"
+          style="font-family: var(--font-heading-family);">
+        {{ section.settings.title }}
+      </h2>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%} Get Collection {%- endcomment -%}
+  {%- liquid
+    assign collection_handle = section.settings.collection | default: 'best-sellers'
+    assign selected_collection = collections[collection_handle]
+    assign products_to_show = section.settings.products_to_show | default: 6
+  -%}
+
+  {%- comment -%} Products Grid/Scroll Container {%- endcomment -%}
+  <div class="best-sellers-custom__container
+              flex lg:grid overflow-x-auto lg:overflow-visible pb-8 md:pb-10 lg:pb-0
+              custom-hide-scrollbar gap-4 md:gap-5 lg:gap-3 xl:gap-5
+              lg:grid-cols-6 cursor-grab lg:cursor-default
+              snap-x snap-mandatory lg:snap-none"
+       data-drag-scroll>
+
+    {%- comment -%} Product Loop {%- endcomment -%}
+    {%- for product in selected_collection.products limit: products_to_show -%}
+
+      {%- comment -%} Calculate Discount Percentage {%- endcomment -%}
+      {%- liquid
+        assign has_discount = false
+        assign discount_percent = 0
+
+        if product.compare_at_price > product.price
+          assign has_discount = true
+          assign price_diff = product.compare_at_price | minus: product.price
+          assign discount_percent = price_diff | times: 100.0 | divided_by: product.compare_at_price | round
+        endif
+      -%}
+
+      {%- comment -%} Get Color Option (if exists) {%- endcomment -%}
+      {%- liquid
+        assign color_option = null
+        assign color_variants = blank
+
+        for option in product.options_with_values
+          assign option_name_downcase = option.name | downcase
+          if option_name_downcase == 'color' or option_name_downcase == 'colour'
+            assign color_option = option
+            break
+          endif
+        endfor
+      -%}
+
+      {%- comment -%} Get Shipping Date from Metafield {%- endcomment -%}
+      {%- liquid
+        assign shipping_date = product.metafields.custom.shipping_date | default: 'within 24-hour'
+      -%}
+
+      {%- comment -%} Product Card {%- endcomment -%}
+      <div class="best-sellers-custom__card
+                  flex-shrink-0 lg:flex-shrink w-[245px] sm:w-[280px] md:w-[320px] lg:w-full
+                  snap-start group flex flex-col rounded-[1.2rem] md:rounded-[1.4rem]
+                  overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:shadow-2xl
+                  transition-all duration-500 border border-gray-100 h-full"
+           data-product-card
+           data-product-id="{{ product.id }}">
+
+        {%- comment -%} Image Area - White Background {%- endcomment -%}
+        <a href="{{ product.url }}"
+           class="relative aspect-square bg-white flex items-center justify-center p-3 md:p-5 border-b border-gray-50 overflow-hidden"
+           aria-label="{{ product.title }}">
+
+          {%- comment -%} Discount Badge {%- endcomment -%}
+          {%- if has_discount -%}
+            <div class="absolute top-2 left-2 md:top-3 md:left-3 z-10
+                        bg-[var(--custom-color-primary)] text-white
+                        text-[13px] md:text-[14px] xl:text-[15px] font-black
+                        px-2 py-0.5 rounded-[3px] shadow-md uppercase tracking-tighter">
+              -{{ discount_percent }}%
+            </div>
+          {%- endif -%}
+
+          {%- comment -%} Product Image {%- endcomment -%}
+          <img
+            src="{{ product.featured_image | image_url: width: 600 }}"
+            srcset="{{ product.featured_image | image_url: width: 300 }} 300w,
+                    {{ product.featured_image | image_url: width: 600 }} 600w"
+            sizes="(min-width: 1024px) 250px, 280px"
+            class="w-[90%] h-[90%] object-contain group-hover:scale-110 transition-transform duration-700 pointer-events-none"
+            alt="{{ product.title | escape }}"
+            loading="lazy"
+            data-product-main-image
+          />
+        </a>
+
+        {%- comment -%} Info Area - Dark Green Background {%- endcomment -%}
+        <div class="bg-[var(--custom-color-primary)] p-4 md:p-5 lg:p-4 xl:p-5 flex flex-col flex-grow text-white">
+
+          {%- comment -%} Product Title {%- endcomment -%}
+          <a href="{{ product.url }}"
+             class="font-extrabold text-[15px] md:text-[16px] xl:text-[17px]
+                    leading-[1.3] mb-4 md:mb-5 min-h-[2.6em]
+                    custom-line-clamp-2 tracking-tight hover:text-white/80 transition-colors">
+            {{ product.title }}
+          </a>
+
+          <div class="space-y-4 mb-6 md:mb-7">
+            {%- comment -%} Shipping Date {%- endcomment -%}
+            {%- if section.settings.show_shipping_date -%}
+              <div class="space-y-0.5">
+                <p class="text-[10px] md:text-[10px] text-white/50 font-bold tracking-tight uppercase">
+                  Shipping date
+                </p>
+                <p class="text-[11px] md:text-[12px] font-black tracking-tight uppercase">
+                  {{ shipping_date }}
+                </p>
+              </div>
+            {%- endif -%}
+
+            {%- comment -%} Color Swatches {%- endcomment -%}
+            {%- if color_option and color_option.values.size > 0 -%}
+              <div class="flex gap-2.5 md:gap-2" data-color-swatches>
+                {%- liquid
+                  assign max_colors = 4
+                  assign color_count = 0
+                -%}
+
+                {%- for color_value in color_option.values limit: max_colors -%}
+                  {%- liquid
+                    assign color_count = color_count | plus: 1
+
+                    # Find variant with this color
+                    assign variant_for_color = null
+                    for variant in product.variants
+                      if variant.available == false
+                        continue
+                      endif
+
+                      for variant_option in variant.options
+                        if variant_option == color_value
+                          assign variant_for_color = variant
+                          break
+                        endif
+                      endfor
+
+                      if variant_for_color
+                        break
+                      endif
+                    endfor
+
+                    # Color name to hex mapping
+                    assign color_hex = '#cccccc'
+                    assign color_lower = color_value | downcase
+
+                    case color_lower
+                      when 'black'
+                        assign color_hex = '#000000'
+                      when 'white'
+                        assign color_hex = '#ffffff'
+                      when 'red'
+                        assign color_hex = '#ff0000'
+                      when 'green'
+                        assign color_hex = '#008000'
+                      when 'blue'
+                        assign color_hex = '#0000ff'
+                      when 'yellow'
+                        assign color_hex = '#ffff00'
+                      when 'orange'
+                        assign color_hex = '#ffa500'
+                      when 'purple'
+                        assign color_hex = '#800080'
+                      when 'pink'
+                        assign color_hex = '#ffc0cb'
+                      when 'brown'
+                        assign color_hex = '#8b4513'
+                      when 'gray' or 'grey'
+                        assign color_hex = '#808080'
+                      when 'cream' or 'beige'
+                        assign color_hex = '#f5f5dc'
+                      when 'navy'
+                        assign color_hex = '#000080'
+                      when 'light blue'
+                        assign color_hex = '#add8e6'
+                      when 'silver'
+                        assign color_hex = '#c0c0c0'
+                      when 'gold'
+                        assign color_hex = '#ffd700'
+                    endcase
+
+                    # Get variant image if available
+                    assign variant_image_url = product.featured_image | image_url: width: 600
+                    if variant_for_color.image
+                      assign variant_image_url = variant_for_color.image | image_url: width: 600
+                    elsif variant_for_color.featured_image
+                      assign variant_image_url = variant_for_color.featured_image | image_url: width: 600
+                    endif
+                  -%}
+
+                  <button
+                    type="button"
+                    class="best-sellers-custom__color-swatch
+                           w-6 h-6 md:w-5 md:h-5 rounded-full border shadow-sm
+                           transition-all duration-300
+                           {% if forloop.first %}scale-110 border-white ring-2 ring-white/50{% else %}border-white/20 hover:scale-105{% endif %}"
+                    style="background-color: {{ color_hex }};"
+                    data-color-swatch
+                    data-variant-id="{{ variant_for_color.id }}"
+                    data-image-url="{{ variant_image_url }}"
+                    data-color-name="{{ color_value | escape }}"
+                    title="{{ color_value | escape }}"
+                    aria-label="Select {{ color_value }} color">
+                  </button>
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+          </div>
+
+          {%- comment -%} Price Row {%- endcomment -%}
+          <div class="flex items-center gap-2 md:gap-3 mb-8">
+            <span class="text-[19px] md:text-[22px] xl:text-[24px] font-black text-[var(--custom-color-accent)] leading-none">
+              {{ product.price | money }}
+            </span>
+            {%- if product.compare_at_price > product.price -%}
+              <span class="text-[12px] md:text-[13px] text-white/60 line-through font-bold">
+                {{ product.compare_at_price | money }}
+              </span>
+            {%- endif -%}
+          </div>
+
+          {%- comment -%} Policy Footer {%- endcomment -%}
+          {%- if section.settings.show_policy_footer -%}
+            <div class="mt-auto pt-4 border-t border-white/5 flex flex-col gap-0.5 opacity-60">
+              <p class="text-[7.5px] md:text-[8.5px] font-black tracking-[0.1em] text-white leading-tight uppercase whitespace-nowrap overflow-hidden text-ellipsis">
+                {{ section.settings.policy_line_1 | default: '2-year warranty , free shipping ,' }}
+              </p>
+              <p class="text-[7.5px] md:text-[8.5px] font-black tracking-[0.1em] text-white leading-tight uppercase">
+                {{ section.settings.policy_line_2 | default: '14-day return time' }}
+              </p>
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+
+    {%- endfor -%}
+
+    {%- comment -%} No Products Message {%- endcomment -%}
+    {%- if selected_collection.products.size == 0 -%}
+      <div class="col-span-full text-center py-12 text-gray-500">
+        <p class="text-lg font-bold mb-2">No products found</p>
+        <p class="text-sm">Please select a collection with products in the theme customizer.</p>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{%- comment -%} Load JavaScript for color switching and drag scroll {%- endcomment -%}
+<script src="{{ 'custom-product-card.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "Best Sellers Custom",
+  "tag": "section",
+  "class": "best-sellers-custom-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content Settings"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section title",
+      "default": "Best seller"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Product collection",
+      "info": "Select a collection to display products from"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 3,
+      "max": 12,
+      "step": 1,
+      "label": "Products to show",
+      "default": 6,
+      "info": "Maximum number of products to display"
+    },
+    {
+      "type": "header",
+      "content": "Display Options"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show vendor/brand",
+      "default": false,
+      "info": "Display product vendor name"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_shipping_date",
+      "label": "Show shipping date",
+      "default": true,
+      "info": "Requires 'custom.shipping_date' metafield on products"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_policy_footer",
+      "label": "Show policy footer",
+      "default": true,
+      "info": "Display warranty and return policy information"
+    },
+    {
+      "type": "header",
+      "content": "Policy Footer Text"
+    },
+    {
+      "type": "text",
+      "id": "policy_line_1",
+      "label": "Policy line 1",
+      "default": "2-year warranty , free shipping ,",
+      "info": "First line of policy information"
+    },
+    {
+      "type": "text",
+      "id": "policy_line_2",
+      "label": "Policy line 2",
+      "default": "14-day return time",
+      "info": "Second line of policy information"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Best Sellers Custom",
+      "settings": {
+        "title": "Best seller",
+        "collection": "best-sellers",
+        "products_to_show": 6,
+        "show_shipping_date": true,
+        "show_policy_footer": true
+      }
+    }
+  ]
+}
+{% endschema %}

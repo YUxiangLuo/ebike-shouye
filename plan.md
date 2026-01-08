@@ -659,8 +659,8 @@ shopify_theme/
 5. ⏳ 测试响应式和基础功能（需上传到 Shopify）
 
 ### 第 2 天: 数据驱动型 Sections (Part 1)
-1. ⏳ 开发 `best-sellers-custom.liquid`
-2. ⏳ 实现颜色切换 JavaScript
+1. ✅ 开发 `best-sellers-custom.liquid` **[DONE - 2026-01-09]**
+2. ✅ 实现颜色切换 JavaScript (`custom-product-card.js`) **[DONE - 2026-01-09]**
 3. ⏳ 开发 `categories-custom.liquid`
 4. ⏳ 测试 Shopify 数据获取
 
@@ -779,4 +779,6 @@ shopify_theme/
 - ✅ 完成 Promo Ticker Custom section (CSS-only animation)
 - ✅ 完成 Christmas Banner Custom section (响应式aspect-ratio, 多级渐变)
 - 🎯 **Milestone 2 完成**: 3个可配置型sections全部完成 (Hero, Ticker, Christmas)
-- 📊 进度：3/10 sections 完成 (30%)
+- ✅ 完成 Best Sellers Custom section (产品集合展示, 颜色切换, 拖拽滚动)
+- ✅ 创建 custom-product-card.js (颜色切换 + 移动端拖拽滚动)
+- 📊 进度：4/10 sections 完成 (40%)
