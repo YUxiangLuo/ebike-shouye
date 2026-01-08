@@ -1,0 +1,217 @@
+{% comment %}
+  Blog Section Custom - Latest blog articles showcase
+
+  Features:
+  - Displays latest articles from a Shopify blog
+  - Mobile: horizontal scroll with drag functionality
+  - Desktop: 3-column grid layout
+  - Article cards with image, title, excerpt, and read more button
+  - Configurable number of articles (2-6)
+  - Optional date and author display
+  - Portrait aspect ratio (3:4) for featured images
+{% endcomment %}
+
+<section class="py-12 md:py-20 bg-white overflow-hidden select-none">
+
+  {%- comment -%} Section Title {%- endcomment -%}
+  <div class="max-w-[var(--custom-container-max-width)] mx-auto px-6 mb-8 md:mb-12">
+    {%- if section.settings.title != blank -%}
+      <h2 class="text-[24px] md:text-[36px] font-black text-[#1a1a1a] tracking-tight uppercase leading-[1.1]"
+          style="font-family: var(--font-heading-family);">
+        {{ section.settings.title }}
+      </h2>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%} Get Blog and Articles {%- endcomment -%}
+  {%- liquid
+    assign blog_handle = section.settings.blog | default: 'news'
+    assign selected_blog = blogs[blog_handle]
+    assign articles_to_show = section.settings.articles_to_show | default: 3
+  -%}
+
+  {%- comment -%} Articles Grid/Scroll Container {%- endcomment -%}
+  <div class="flex overflow-x-auto custom-hide-scrollbar px-6 pb-12 gap-6
+              lg:grid lg:grid-cols-3 lg:gap-12 lg:max-w-[var(--custom-container-max-width)] lg:mx-auto
+              cursor-grab lg:cursor-default
+              snap-x snap-mandatory lg:snap-none"
+       data-drag-scroll>
+
+    {%- comment -%} Article Loop {%- endcomment -%}
+    {%- for article in selected_blog.articles limit: articles_to_show -%}
+
+      <article class="flex-shrink-0 w-[78vw] sm:w-[340px] lg:w-full flex flex-col snap-start group">
+
+        {%- comment -%} Article Image {%- endcomment -%}
+        <a href="{{ article.url }}"
+           class="aspect-[3/4] rounded-[2rem] overflow-hidden mb-6 bg-gray-100 shadow-sm block"
+           aria-label="Read {{ article.title }}">
+          {%- if article.image != blank -%}
+            <img
+              src="{{ article.image | image_url: width: 800 }}"
+              srcset="{{ article.image | image_url: width: 400 }} 400w,
+                      {{ article.image | image_url: width: 800 }} 800w"
+              sizes="(min-width: 1024px) 500px, 340px"
+              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              alt="{{ article.title | escape }}"
+              loading="lazy"
+            />
+          {%- else -%}
+            {%- comment -%} Placeholder if no image {%- endcomment -%}
+            <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
+              <svg class="w-20 h-20 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+              </svg>
+            </div>
+          {%- endif -%}
+        </a>
+
+        {%- comment -%} Article Content {%- endcomment -%}
+        <div>
+          {%- comment -%} Article Title {%- endcomment -%}
+          <a href="{{ article.url }}"
+             class="block">
+            <h3 class="text-xl font-black mb-3 leading-tight text-[#1a1a1a] custom-line-clamp-2 hover:text-[var(--custom-color-primary)] transition-colors">
+              {{ article.title }}
+            </h3>
+          </a>
+
+          {%- comment -%} Article Meta (Date & Author) {%- endcomment -%}
+          {%- if section.settings.show_date or section.settings.show_author -%}
+            <div class="flex items-center gap-2 mb-3 text-gray-500 text-[13px] font-bold">
+              {%- if section.settings.show_date -%}
+                <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
+                  {{ article.published_at | date: '%B %d, %Y' }}
+                </time>
+              {%- endif -%}
+
+              {%- if section.settings.show_date and section.settings.show_author -%}
+                <span>•</span>
+              {%- endif -%}
+
+              {%- if section.settings.show_author and article.author != blank -%}
+                <span>By {{ article.author }}</span>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+
+          {%- comment -%} Article Excerpt {%- endcomment -%}
+          {%- if section.settings.show_excerpt -%}
+            <p class="text-gray-400 text-[14px] mb-6 custom-line-clamp-2 leading-relaxed font-bold">
+              {%- if article.excerpt != blank -%}
+                {{ article.excerpt | strip_html | truncate: 150 }}
+              {%- else -%}
+                {{ article.content | strip_html | truncate: 150 }}
+              {%- endif -%}
+            </p>
+          {%- endif -%}
+
+          {%- comment -%} Read More Button {%- endcomment -%}
+          <a href="{{ article.url }}"
+             class="inline-block px-8 py-3 border-2 border-[#1a1a1a] rounded-full
+                    text-[12px] font-black text-[#1a1a1a]
+                    hover:bg-[#1a1a1a] hover:text-white
+                    transition-all uppercase tracking-widest active:scale-95"
+             aria-label="Read more about {{ article.title }}">
+            {{ section.settings.button_text | default: 'Read more' }}
+          </a>
+        </div>
+      </article>
+
+    {%- endfor -%}
+
+    {%- comment -%} No Articles Message {%- endcomment -%}
+    {%- if selected_blog.articles.size == 0 -%}
+      <div class="col-span-full text-center py-12 text-gray-500">
+        <p class="text-lg font-bold mb-2">No articles found</p>
+        <p class="text-sm">Please select a blog with articles in the theme customizer.</p>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{%- comment -%} Load JavaScript for drag scroll {%- endcomment -%}
+{%- comment -%} Using existing custom-product-card.js which already has DragScrollContainer {%- endcomment -%}
+
+{% schema %}
+{
+  "name": "Blog Section Custom",
+  "tag": "section",
+  "class": "blog-section-custom",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content Settings"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section title",
+      "default": "DISCOVER YOUR MOST EXCITING CITY RIDES",
+      "info": "Supports HTML line breaks with <br>"
+    },
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "Blog",
+      "info": "Select a blog to display articles from"
+    },
+    {
+      "type": "range",
+      "id": "articles_to_show",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "label": "Articles to show",
+      "default": 3,
+      "info": "Maximum number of articles to display"
+    },
+    {
+      "type": "header",
+      "content": "Display Options"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_excerpt",
+      "label": "Show article excerpt",
+      "default": true,
+      "info": "Display article summary text"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "label": "Show publish date",
+      "default": true,
+      "info": "Display when the article was published"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "label": "Show author",
+      "default": false,
+      "info": "Display article author name"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Read more",
+      "info": "Text for the article link button"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blog Section Custom",
+      "settings": {
+        "title": "DISCOVER YOUR MOST EXCITING CITY RIDES",
+        "blog": "news",
+        "articles_to_show": 3,
+        "show_excerpt": true,
+        "show_date": true,
+        "show_author": false,
+        "button_text": "Read more"
+      }
+    }
+  ]
+}
+{% endschema %}
