@@ -1,0 +1,360 @@
+{% comment %}
+  Feature Video Custom - Video showcase section
+
+  Features:
+  - Supports YouTube, Vimeo, and self-hosted videos
+  - Cover image with play button overlay
+  - Optional title and description overlay
+  - Responsive 16:9 aspect ratio
+  - Autoplay and loop options
+  - Click to play functionality
+{% endcomment %}
+
+<section class="py-12 md:py-20 px-4 md:px-10 lg:px-12 max-w-[var(--custom-container-max-width)] mx-auto">
+
+  {%- comment -%} Determine video type and source {%- endcomment -%}
+  {%- liquid
+    assign video_type = section.settings.video_type | default: 'youtube'
+    assign youtube_url = section.settings.youtube_url
+    assign vimeo_url = section.settings.vimeo_url
+    assign video_file = section.settings.video_file
+    assign cover_image = section.settings.cover_image
+    assign autoplay = section.settings.autoplay
+    assign loop_video = section.settings.loop_video
+    assign muted = section.settings.muted
+
+    # Extract YouTube video ID
+    assign youtube_id = ''
+    if youtube_url contains 'youtube.com/watch?v='
+      assign youtube_parts = youtube_url | split: 'v='
+      assign youtube_id = youtube_parts[1] | split: '&' | first
+    elsif youtube_url contains 'youtu.be/'
+      assign youtube_parts = youtube_url | split: 'youtu.be/'
+      assign youtube_id = youtube_parts[1] | split: '?' | first
+    endif
+
+    # Extract Vimeo video ID
+    assign vimeo_id = ''
+    if vimeo_url contains 'vimeo.com/'
+      assign vimeo_parts = vimeo_url | split: 'vimeo.com/'
+      assign vimeo_id = vimeo_parts[1] | split: '/' | first
+    endif
+  -%}
+
+  {%- comment -%} Video Container {%- endcomment -%}
+  <div class="relative rounded-[1rem] md:rounded-[2rem] overflow-hidden shadow-2xl bg-black"
+       data-video-container>
+
+    {%- comment -%} Video Player Area {%- endcomment -%}
+    <div class="relative aspect-video">
+
+      {%- comment -%} YouTube Video {%- endcomment -%}
+      {%- if video_type == 'youtube' and youtube_id != '' -%}
+        <div class="absolute inset-0"
+             data-video-player="youtube"
+             data-video-id="{{ youtube_id }}"
+             data-autoplay="{{ autoplay }}"
+             data-loop="{{ loop_video }}"
+             data-muted="{{ muted }}">
+
+          {%- comment -%} Cover Image with Play Button {%- endcomment -%}
+          {%- if cover_image != blank or autoplay == false -%}
+            <div class="absolute inset-0 bg-black cursor-pointer group"
+                 data-video-cover>
+              {%- if cover_image != blank -%}
+                <img
+                  src="{{ cover_image | image_url: width: 1920 }}"
+                  srcset="{{ cover_image | image_url: width: 750 }} 750w,
+                          {{ cover_image | image_url: width: 1100 }} 1100w,
+                          {{ cover_image | image_url: width: 1500 }} 1500w,
+                          {{ cover_image | image_url: width: 1920 }} 1920w"
+                  sizes="(min-width: 1200px) 1550px, 100vw"
+                  class="w-full h-full object-cover"
+                  alt="{{ section.settings.title | escape }}"
+                  loading="lazy"
+                />
+              {%- else -%}
+                <img
+                  src="https://img.youtube.com/vi/{{ youtube_id }}/maxresdefault.jpg"
+                  class="w-full h-full object-cover"
+                  alt="Video thumbnail"
+                  loading="lazy"
+                />
+              {%- endif -%}
+
+              {%- comment -%} Play Button Overlay {%- endcomment -%}
+              <div class="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-colors">
+                <button class="w-20 h-20 md:w-24 md:h-24 bg-red-600 rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform active:scale-95"
+                        aria-label="Play video">
+                  <svg class="w-8 h-8 md:w-10 md:h-10 text-white fill-current ml-1" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          {%- endif -%}
+
+          {%- comment -%} YouTube iframe (will be injected by JS) {%- endcomment -%}
+          <div class="youtube-player-placeholder" data-youtube-placeholder></div>
+        </div>
+
+      {%- comment -%} Vimeo Video {%- endcomment -%}
+      {%- elsif video_type == 'vimeo' and vimeo_id != '' -%}
+        <div class="absolute inset-0"
+             data-video-player="vimeo"
+             data-video-id="{{ vimeo_id }}"
+             data-autoplay="{{ autoplay }}"
+             data-loop="{{ loop_video }}"
+             data-muted="{{ muted }}">
+
+          {%- if cover_image != blank or autoplay == false -%}
+            <div class="absolute inset-0 bg-black cursor-pointer group z-10"
+                 data-video-cover>
+              {%- if cover_image != blank -%}
+                <img
+                  src="{{ cover_image | image_url: width: 1920 }}"
+                  srcset="{{ cover_image | image_url: width: 750 }} 750w,
+                          {{ cover_image | image_url: width: 1500 }} 1500w,
+                          {{ cover_image | image_url: width: 1920 }} 1920w"
+                  sizes="(min-width: 1200px) 1550px, 100vw"
+                  class="w-full h-full object-cover"
+                  alt="{{ section.settings.title | escape }}"
+                  loading="lazy"
+                />
+              {%- endif -%}
+
+              <div class="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-colors">
+                <button class="w-20 h-20 md:w-24 md:h-24 bg-[#00adef] rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform active:scale-95"
+                        aria-label="Play video">
+                  <svg class="w-8 h-8 md:w-10 md:h-10 text-white fill-current ml-1" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          {%- endif -%}
+
+          <iframe
+            src="https://player.vimeo.com/video/{{ vimeo_id }}?autoplay={{ autoplay | default: false }}&loop={{ loop_video | default: false }}&muted={{ muted | default: false }}&title=0&byline=0&portrait=0"
+            class="absolute inset-0 w-full h-full"
+            frameborder="0"
+            allow="autoplay; fullscreen; picture-in-picture"
+            allowfullscreen
+            data-vimeo-iframe>
+          </iframe>
+        </div>
+
+      {%- comment -%} Self-Hosted Video {%- endcomment -%}
+      {%- elsif video_type == 'hosted' and video_file != blank -%}
+        <div class="absolute inset-0 bg-black"
+             data-video-player="hosted">
+
+          <video
+            class="w-full h-full object-cover"
+            {% if autoplay %}autoplay{% endif %}
+            {% if loop_video %}loop{% endif %}
+            {% if muted %}muted{% endif %}
+            playsinline
+            controls
+            data-hosted-video>
+            <source src="{{ video_file }}" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+
+          {%- if cover_image != blank and autoplay == false -%}
+            <div class="absolute inset-0 cursor-pointer group"
+                 data-video-cover>
+              <img
+                src="{{ cover_image | image_url: width: 1920 }}"
+                class="w-full h-full object-cover"
+                alt="{{ section.settings.title | escape }}"
+                loading="lazy"
+              />
+              <div class="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-colors">
+                <button class="w-20 h-20 md:w-24 md:h-24 bg-white rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform active:scale-95"
+                        aria-label="Play video">
+                  <svg class="w-8 h-8 md:w-10 md:h-10 text-black fill-current ml-1" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          {%- endif -%}
+        </div>
+
+      {%- comment -%} Placeholder {%- endcomment -%}
+      {%- else -%}
+        <div class="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
+          <div class="text-center text-white/60 p-8">
+            <svg class="w-20 h-20 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <p class="text-lg font-bold mb-2">No video configured</p>
+            <p class="text-sm">Add a video URL in the theme customizer</p>
+          </div>
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} Text Overlay (if enabled) {%- endcomment -%}
+      {%- if section.settings.show_overlay and section.settings.title != blank -%}
+        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-8 md:p-12">
+          <div class="text-white max-w-3xl">
+            {%- if section.settings.title != blank -%}
+              <h2 class="text-2xl md:text-4xl lg:text-5xl font-black mb-4 drop-shadow-lg"
+                  style="font-family: var(--font-heading-family);">
+                {{ section.settings.title }}
+              </h2>
+            {%- endif -%}
+
+            {%- if section.settings.description != blank -%}
+              <p class="text-base md:text-lg font-medium opacity-90 leading-relaxed mb-6">
+                {{ section.settings.description }}
+              </p>
+            {%- endif -%}
+
+            {%- if section.settings.button_text != blank and section.settings.button_link != blank -%}
+              <a href="{{ section.settings.button_link }}"
+                 class="inline-block px-8 py-3 bg-white text-black rounded-full font-black text-sm hover:bg-gray-100 transition-all uppercase tracking-widest">
+                {{ section.settings.button_text }}
+              </a>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{%- comment -%} Load JavaScript for video player {%- endcomment -%}
+<script src="{{ 'custom-video.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "Feature Video Custom",
+  "tag": "section",
+  "class": "feature-video-custom-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Video Settings"
+    },
+    {
+      "type": "select",
+      "id": "video_type",
+      "label": "Video type",
+      "options": [
+        {
+          "value": "youtube",
+          "label": "YouTube"
+        },
+        {
+          "value": "vimeo",
+          "label": "Vimeo"
+        },
+        {
+          "value": "hosted",
+          "label": "Self-hosted video"
+        }
+      ],
+      "default": "youtube",
+      "info": "Choose your video source"
+    },
+    {
+      "type": "url",
+      "id": "youtube_url",
+      "label": "YouTube URL",
+      "info": "Example: https://www.youtube.com/watch?v=VIDEO_ID"
+    },
+    {
+      "type": "url",
+      "id": "vimeo_url",
+      "label": "Vimeo URL",
+      "info": "Example: https://vimeo.com/VIDEO_ID"
+    },
+    {
+      "type": "video",
+      "id": "video_file",
+      "label": "Self-hosted video file",
+      "info": "Upload an MP4 video file"
+    },
+    {
+      "type": "image_picker",
+      "id": "cover_image",
+      "label": "Cover image",
+      "info": "Shown before video plays. For YouTube, thumbnail is auto-generated if not provided."
+    },
+    {
+      "type": "header",
+      "content": "Playback Options"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Autoplay video",
+      "default": false,
+      "info": "Video will play automatically (muted)"
+    },
+    {
+      "type": "checkbox",
+      "id": "loop_video",
+      "label": "Loop video",
+      "default": true,
+      "info": "Video will restart when finished"
+    },
+    {
+      "type": "checkbox",
+      "id": "muted",
+      "label": "Mute video",
+      "default": false,
+      "info": "Start video with sound muted"
+    },
+    {
+      "type": "header",
+      "content": "Text Overlay"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_overlay",
+      "label": "Show text overlay",
+      "default": false,
+      "info": "Display title and description over video"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "info": "Displayed over video (if overlay enabled)"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "info": "Short description text"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "info": "Call-to-action button (requires link)"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Feature Video Custom",
+      "settings": {
+        "video_type": "youtube",
+        "autoplay": false,
+        "loop_video": true,
+        "muted": false,
+        "show_overlay": false
+      }
+    }
+  ]
+}
+{% endschema %}

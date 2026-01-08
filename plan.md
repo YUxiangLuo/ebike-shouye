@@ -667,7 +667,7 @@ shopify_theme/
 ### 第 3 天: 数据驱动型 Sections (Part 2) + 静态 Sections
 1. ✅ 开发 `blog-section-custom.liquid` **[DONE - 2026-01-09]**
 2. ✅ 开发 `christmas-banner-custom.liquid` **[DONE - 2026-01-09]**
-3. ⏳ 开发 `feature-video-custom.liquid`
+3. ✅ 开发 `feature-video-custom.liquid` + `custom-video.js` **[DONE - 2026-01-09]**
 4. ⏳ 开发 `reviews-custom.liquid`
 
 ### 第 4 天: 剩余 Sections + 全局 JS
@@ -784,4 +784,6 @@ shopify_theme/
 - ✅ 完成 Categories Custom section (分类网格, blocks配置, 响应式布局)
 - ✅ 完成 Blog Section Custom (博客文章展示, 3列网格, 拖拽滚动)
 - 🎯 **Milestone 3 完成**: 3个数据驱动型sections全部完成 (Best Sellers, Categories, Blog)
-- 📊 进度：6/10 sections 完成 (60%)
+- ✅ 完成 Feature Video Custom (YouTube/Vimeo/自托管视频, 播放控制)
+- ✅ 创建 custom-video.js (视频播放器控制, iframe动态加载)
+- 📊 进度：7/10 sections 完成 (70%)
