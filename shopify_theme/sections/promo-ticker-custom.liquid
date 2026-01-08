@@ -1,0 +1,440 @@
+{% comment %}
+  Promo Ticker Custom Section
+  Infinite scrolling promotional message bar
+
+  Features:
+  - Configurable messages via blocks
+  - Icon support (predefined types + custom SVG)
+  - Infinite seamless scroll animation
+  - Pause on hover
+  - Customizable colors and speed
+{% endcomment %}
+
+{%- liquid
+  assign section_id = 'promo-ticker-' | append: section.id
+  assign enabled = section.settings.enabled
+  assign bg_color = section.settings.background_color
+  assign text_color = section.settings.text_color
+  assign speed = section.settings.speed
+  assign border_top = section.settings.border_top
+  assign border_bottom = section.settings.border_bottom
+-%}
+
+{%- if enabled and section.blocks.size > 0 -%}
+  <div
+    id="{{ section_id }}"
+    class="promo-ticker-custom"
+    style="
+      --ticker-bg-color: {{ bg_color }};
+      --ticker-text-color: {{ text_color }};
+      --ticker-speed: {{ speed }}s;
+    "
+  >
+    <div class="promo-ticker-custom__wrapper{% if border_top %} promo-ticker-custom__wrapper--border-top{% endif %}{% if border_bottom %} promo-ticker-custom__wrapper--border-bottom{% endif %}">
+      <div class="promo-ticker-custom__track custom-animate-marquee">
+        {%- comment -%} First set of messages {%- endcomment -%}
+        <div class="promo-ticker-custom__set">
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign message_text = block.settings.text
+              assign icon_type = block.settings.icon_type
+              assign custom_icon_svg = block.settings.icon_svg
+              assign message_link = block.settings.link
+            -%}
+
+            {%- if message_link != blank -%}
+              <a href="{{ message_link }}" class="promo-ticker-custom__item" {{ block.shopify_attributes }}>
+            {%- else -%}
+              <div class="promo-ticker-custom__item" {{ block.shopify_attributes }}>
+            {%- endif -%}
+
+              {%- comment -%} Icon rendering {%- endcomment -%}
+              <span class="promo-ticker-custom__icon">
+                {%- case icon_type -%}
+                  {%- when 'tag' -%}
+                    <svg class="promo-ticker-custom__icon-svg" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82zM7 7a1 1 0 100-2 1 1 0 000 2z" />
+                    </svg>
+                  {%- when 'chart' -%}
+                    <svg class="promo-ticker-custom__icon-svg" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6h-6z" />
+                    </svg>
+                  {%- when 'truck' -%}
+                    <svg class="promo-ticker-custom__icon-svg" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M18 18.5a1.5 1.5 0 01-1.5-1.5 1.5 1.5 0 011.5-1.5 1.5 1.5 0 011.5 1.5 1.5 1.5 0 01-1.5 1.5m1.5-9l1.96 2.5H17V9.5m-11 9A1.5 1.5 0 014.5 17 1.5 1.5 0 016 15.5 1.5 1.5 0 017.5 17 1.5 1.5 0 016 18.5M20 8h-3V4H3c-1.11 0-2 .89-2 2v11h2a3 3 0 003 3 3 3 0 003-3h6a3 3 0 003 3 3 3 0 003-3h2v-5l-3-4z"/>
+                    </svg>
+                  {%- when 'shield' -%}
+                    <svg class="promo-ticker-custom__icon-svg" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
+                    </svg>
+                  {%- when 'star' -%}
+                    <svg class="promo-ticker-custom__icon-svg" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                    </svg>
+                  {%- when 'fire' -%}
+                    <svg class="promo-ticker-custom__icon-svg" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M13.5.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67zM11.71 19c-1.78 0-3.22-1.4-3.22-3.14 0-1.62 1.05-2.76 2.81-3.12 1.77-.36 3.6-1.21 4.62-2.58.39 1.29.59 2.65.59 4.04 0 2.65-2.15 4.8-4.8 4.8z"/>
+                    </svg>
+                  {%- when 'gift' -%}
+                    <svg class="promo-ticker-custom__icon-svg" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M22 12v8a2 2 0 01-2 2H4a2 2 0 01-2-2v-8h20zm0-2H2V7a2 2 0 012-2h3.17A3 3 0 0110 2a3 3 0 012.83 3H16a2 2 0 012 2v3zM10 4a1 1 0 100 2 1 1 0 000-2z"/>
+                    </svg>
+                  {%- when 'custom' -%}
+                    {%- if custom_icon_svg != blank -%}
+                      {{ custom_icon_svg }}
+                    {%- endif -%}
+                  {%- when 'none' -%}
+                    {%- comment -%} No icon {%- endcomment -%}
+                {%- endcase -%}
+              </span>
+
+              {%- comment -%} Message text {%- endcomment -%}
+              <span class="promo-ticker-custom__text">{{ message_text }}</span>
+
+            {%- if message_link != blank -%}
+              </a>
+            {%- else -%}
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+
+        {%- comment -%} Duplicate set for seamless loop {%- endcomment -%}
+        <div class="promo-ticker-custom__set">
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign message_text = block.settings.text
+              assign icon_type = block.settings.icon_type
+              assign custom_icon_svg = block.settings.icon_svg
+              assign message_link = block.settings.link
+            -%}
+
+            {%- if message_link != blank -%}
+              <a href="{{ message_link }}" class="promo-ticker-custom__item">
+            {%- else -%}
+              <div class="promo-ticker-custom__item">
+            {%- endif -%}
+
+              <span class="promo-ticker-custom__icon">
+                {%- case icon_type -%}
+                  {%- when 'tag' -%}
+                    <svg class="promo-ticker-custom__icon-svg" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82zM7 7a1 1 0 100-2 1 1 0 000 2z" />
+                    </svg>
+                  {%- when 'chart' -%}
+                    <svg class="promo-ticker-custom__icon-svg" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6h-6z" />
+                    </svg>
+                  {%- when 'truck' -%}
+                    <svg class="promo-ticker-custom__icon-svg" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M18 18.5a1.5 1.5 0 01-1.5-1.5 1.5 1.5 0 011.5-1.5 1.5 1.5 0 011.5 1.5 1.5 1.5 0 01-1.5 1.5m1.5-9l1.96 2.5H17V9.5m-11 9A1.5 1.5 0 014.5 17 1.5 1.5 0 016 15.5 1.5 1.5 0 017.5 17 1.5 1.5 0 016 18.5M20 8h-3V4H3c-1.11 0-2 .89-2 2v11h2a3 3 0 003 3 3 3 0 003-3h6a3 3 0 003 3 3 3 0 003-3h2v-5l-3-4z"/>
+                    </svg>
+                  {%- when 'shield' -%}
+                    <svg class="promo-ticker-custom__icon-svg" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
+                    </svg>
+                  {%- when 'star' -%}
+                    <svg class="promo-ticker-custom__icon-svg" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                    </svg>
+                  {%- when 'fire' -%}
+                    <svg class="promo-ticker-custom__icon-svg" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M13.5.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67zM11.71 19c-1.78 0-3.22-1.4-3.22-3.14 0-1.62 1.05-2.76 2.81-3.12 1.77-.36 3.6-1.21 4.62-2.58.39 1.29.59 2.65.59 4.04 0 2.65-2.15 4.8-4.8 4.8z"/>
+                    </svg>
+                  {%- when 'gift' -%}
+                    <svg class="promo-ticker-custom__icon-svg" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M22 12v8a2 2 0 01-2 2H4a2 2 0 01-2-2v-8h20zm0-2H2V7a2 2 0 012-2h3.17A3 3 0 0110 2a3 3 0 012.83 3H16a2 2 0 012 2v3zM10 4a1 1 0 100 2 1 1 0 000-2z"/>
+                    </svg>
+                  {%- when 'custom' -%}
+                    {%- if custom_icon_svg != blank -%}
+                      {{ custom_icon_svg }}
+                    {%- endif -%}
+                {%- endcase -%}
+              </span>
+
+              <span class="promo-ticker-custom__text">{{ message_text }}</span>
+
+            {%- if message_link != blank -%}
+              </a>
+            {%- else -%}
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .promo-ticker-custom {
+      background-color: var(--ticker-bg-color);
+      color: var(--ticker-text-color);
+      overflow: hidden;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .promo-ticker-custom__wrapper {
+      padding: 1rem 0;
+      position: relative;
+    }
+
+    .promo-ticker-custom__wrapper--border-top {
+      border-top: 1px solid rgba(0, 0, 0, 0.2);
+    }
+
+    .promo-ticker-custom__wrapper--border-bottom {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    }
+
+    .promo-ticker-custom__track {
+      display: flex;
+      width: max-content;
+      animation: custom-marquee var(--ticker-speed) linear infinite;
+    }
+
+    .promo-ticker-custom__track:hover {
+      animation-play-state: paused;
+    }
+
+    .promo-ticker-custom__set {
+      display: flex;
+      align-items: center;
+      gap: 3rem;
+      padding: 0 2rem;
+    }
+
+    @media (min-width: 768px) {
+      .promo-ticker-custom__set {
+        gap: 4rem;
+      }
+    }
+
+    .promo-ticker-custom__item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      white-space: nowrap;
+      font-family: var(--font-body-family);
+      font-size: 0.75rem;
+      font-weight: 900;
+      font-style: italic;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      text-decoration: none;
+      color: inherit;
+      transition: opacity 300ms;
+    }
+
+    @media (min-width: 768px) {
+      .promo-ticker-custom__item {
+        font-size: 0.875rem;
+      }
+    }
+
+    a.promo-ticker-custom__item:hover {
+      opacity: 0.8;
+    }
+
+    .promo-ticker-custom__icon {
+      display: flex;
+      align-items: center;
+      opacity: 0.9;
+    }
+
+    .promo-ticker-custom__icon-svg {
+      width: 1rem;
+      height: 1rem;
+    }
+
+    @media (min-width: 768px) {
+      .promo-ticker-custom__icon-svg {
+        width: 1.25rem;
+        height: 1.25rem;
+      }
+    }
+
+    .promo-ticker-custom__text {
+      display: inline-block;
+    }
+
+    /* Respect reduced motion preference */
+    @media (prefers-reduced-motion: reduce) {
+      .promo-ticker-custom__track {
+        animation: none;
+      }
+
+      .promo-ticker-custom__track {
+        overflow-x: auto;
+      }
+    }
+  </style>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Promo Ticker Custom",
+  "tag": "section",
+  "class": "section-promo-ticker-custom",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enabled",
+      "label": "Enable ticker",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#004d43"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Animation"
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "s",
+      "label": "Scroll speed",
+      "default": 30,
+      "info": "Lower value = faster scroll"
+    },
+    {
+      "type": "header",
+      "content": "Borders"
+    },
+    {
+      "type": "checkbox",
+      "id": "border_top",
+      "label": "Show top border",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "border_bottom",
+      "label": "Show bottom border",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "message",
+      "name": "Message",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Message text",
+          "default": "Free shipping on orders over €100"
+        },
+        {
+          "type": "select",
+          "id": "icon_type",
+          "label": "Icon type",
+          "options": [
+            {
+              "value": "none",
+              "label": "No icon"
+            },
+            {
+              "value": "tag",
+              "label": "Tag (sale/discount)"
+            },
+            {
+              "value": "chart",
+              "label": "Chart (trending up)"
+            },
+            {
+              "value": "truck",
+              "label": "Truck (shipping)"
+            },
+            {
+              "value": "shield",
+              "label": "Shield (warranty/protection)"
+            },
+            {
+              "value": "star",
+              "label": "Star (featured)"
+            },
+            {
+              "value": "fire",
+              "label": "Fire (hot deal)"
+            },
+            {
+              "value": "gift",
+              "label": "Gift (bonus/free gift)"
+            },
+            {
+              "value": "custom",
+              "label": "Custom SVG"
+            }
+          ],
+          "default": "tag"
+        },
+        {
+          "type": "html",
+          "id": "icon_svg",
+          "label": "Custom SVG icon",
+          "info": "Only used if 'Custom SVG' is selected above. Paste your SVG code here."
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link (optional)",
+          "info": "Make this message clickable"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Promo Ticker Custom",
+      "blocks": [
+        {
+          "type": "message",
+          "settings": {
+            "text": "BLACK FRIDAY",
+            "icon_type": "tag"
+          }
+        },
+        {
+          "type": "message",
+          "settings": {
+            "text": "UP TO 50% OFF",
+            "icon_type": "chart"
+          }
+        },
+        {
+          "type": "message",
+          "settings": {
+            "text": "FREE SHIPPING",
+            "icon_type": "truck"
+          }
+        },
+        {
+          "type": "message",
+          "settings": {
+            "text": "2-YEAR WARRANTY",
+            "icon_type": "shield"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
