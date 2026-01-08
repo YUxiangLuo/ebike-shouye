@@ -1,96 +1,51 @@
 /**
- * Custom Base CSS
- * Global styles for custom homepage sections
+ * Custom Base CSS - Refactored & Optimized
+ * Extends Shopify theme base.css with minimal additions
  *
- * Contents:
- * 1. Font Imports
- * 2. CSS Variables
- * 3. Utility Classes
- * 4. Global Overrides
+ * Strategy:
+ * - Reuse theme variables where possible (--font-body-family, etc.)
+ * - Only add what the theme doesn't have (brand colors, large radius)
+ * - Keep utilities the theme lacks (hide-scrollbar, line-clamp, etc.)
+ *
+ * Load order: base.css → custom-base.css (loaded in theme.liquid)
  */
 
 /* ============================================
    1. FONT IMPORTS
    ============================================ */
 
+/* Import custom fonts not included in theme */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 /* ============================================
-   2. CSS VARIABLES
+   2. CSS VARIABLES (Only New Ones)
    ============================================ */
 
 :root {
-  /* Brand Colors */
+  /* Brand Colors (theme doesn't have these specific values) */
   --custom-color-primary: #004d43;
   --custom-color-primary-dark: #003d35;
   --custom-color-primary-light: #005a4d;
   --custom-color-accent: #ffcc00;
-  --custom-color-black: #1a1a1a;
-  --custom-color-white: #ffffff;
-  --custom-color-gray-light: #f5f5f5;
-  --custom-color-gray: #808080;
 
-  /* Fonts */
-  --custom-font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --custom-font-heading: 'Playfair Display', Georgia, serif;
-
-  /* Font Weights */
-  --custom-font-light: 300;
-  --custom-font-regular: 400;
-  --custom-font-medium: 500;
-  --custom-font-semibold: 600;
-  --custom-font-bold: 700;
-  --custom-font-extrabold: 800;
-  --custom-font-black: 900;
-
-  /* Spacing */
-  --custom-spacing-xs: 0.25rem;    /* 4px */
-  --custom-spacing-sm: 0.5rem;     /* 8px */
-  --custom-spacing-md: 1rem;       /* 16px */
-  --custom-spacing-lg: 1.5rem;     /* 24px */
-  --custom-spacing-xl: 2rem;       /* 32px */
-  --custom-spacing-2xl: 3rem;      /* 48px */
-  --custom-spacing-3xl: 4rem;      /* 64px */
-
-  /* Border Radius */
-  --custom-radius-sm: 0.25rem;     /* 4px */
-  --custom-radius-md: 0.5rem;      /* 8px */
-  --custom-radius-lg: 1rem;        /* 16px */
-  --custom-radius-xl: 1.5rem;      /* 24px */
-  --custom-radius-2xl: 2.5rem;     /* 40px */
+  /* Extended Border Radius (theme max is ~1rem, we need 2.5rem) */
+  --custom-radius-2xl: 2.5rem;     /* 40px - for hero thumbnails */
   --custom-radius-full: 9999px;
 
-  /* Shadows */
-  --custom-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --custom-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --custom-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  --custom-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  --custom-shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-
-  /* Transitions */
-  --custom-transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-  --custom-transition-base: 300ms cubic-bezier(0.4, 0, 0.2, 1);
-  --custom-transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
-  --custom-transition-slower: 700ms cubic-bezier(0.4, 0, 0.2, 1);
-
-  /* Z-index */
-  --custom-z-base: 1;
-  --custom-z-dropdown: 10;
-  --custom-z-sticky: 20;
-  --custom-z-modal: 30;
-  --custom-z-popover: 40;
-  --custom-z-tooltip: 50;
-
-  /* Container Max Width */
+  /* Custom Container (1550px vs theme's 1600px max) */
   --custom-container-max-width: 1550px;
+
+  /* Font Aliases (point to theme fonts, set via settings_schema.json) */
+  /* Note: These will be set when configuring theme fonts to Inter & Playfair */
+  /* We reference theme vars: var(--font-body-family), var(--font-heading-family) */
 }
 
 /* ============================================
-   3. UTILITY CLASSES
+   3. UTILITY CLASSES (Theme Doesn't Have)
    ============================================ */
 
-/* Hide Scrollbar */
+/* Hide Scrollbar - for horizontal scroll sections */
 .custom-hide-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -100,7 +55,7 @@
   display: none;
 }
 
-/* Line Clamp */
+/* Line Clamp - multi-line text truncation */
 .custom-line-clamp-1 {
   display: -webkit-box;
   -webkit-line-clamp: 1;
@@ -122,7 +77,7 @@
   overflow: hidden;
 }
 
-/* Aspect Ratio Utilities (fallback for older browsers) */
+/* Aspect Ratio Utilities with Fallback */
 .custom-aspect-square {
   aspect-ratio: 1 / 1;
 }
@@ -139,6 +94,7 @@
   aspect-ratio: 25 / 9;
 }
 
+/* Fallback for Safari < 15 */
 @supports not (aspect-ratio: 1 / 1) {
   .custom-aspect-square::before {
     float: left;
@@ -154,7 +110,7 @@
 
   .custom-aspect-video::before {
     float: left;
-    padding-top: 56.25%; /* 16:9 */
+    padding-top: 56.25%;
     content: '';
   }
 
@@ -165,7 +121,7 @@
   }
 }
 
-/* Container */
+/* Container (custom max-width for homepage sections) */
 .custom-container {
   width: 100%;
   max-width: var(--custom-container-max-width);
@@ -189,7 +145,7 @@
   }
 }
 
-/* Gradient Overlays */
+/* Gradient Overlays - for hero/banner sections */
 .custom-gradient-overlay-t {
   background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.2) 50%, transparent 100%);
 }
@@ -202,7 +158,7 @@
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.2) 50%, transparent 100%);
 }
 
-/* Text Utilities */
+/* Text Wrapping (modern CSS, progressive enhancement) */
 .custom-text-balance {
   text-wrap: balance;
 }
@@ -211,100 +167,18 @@
   text-wrap: pretty;
 }
 
-/* Selection */
+/* Custom Selection Color */
 ::selection {
   background-color: var(--custom-color-primary);
-  color: var(--custom-color-white);
+  color: #ffffff;
 }
 
 ::-moz-selection {
   background-color: var(--custom-color-primary);
-  color: var(--custom-color-white);
-}
-
-/* Smooth Scroll */
-html {
-  scroll-behavior: smooth;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-}
-
-/* Focus Styles */
-.custom-focus-ring:focus {
-  outline: 2px solid var(--custom-color-primary);
-  outline-offset: 2px;
-}
-
-.custom-focus-ring:focus:not(:focus-visible) {
-  outline: none;
-}
-
-/* ============================================
-   4. GLOBAL OVERRIDES & HELPERS
-   ============================================ */
-
-/* Anti-aliasing for better font rendering */
-body {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* Prevent layout shift for images */
-img {
-  max-width: 100%;
-  height: auto;
-}
-
-/* Button reset for custom buttons */
-.custom-button-reset {
-  background: none;
-  border: none;
-  padding: 0;
-  margin: 0;
-  font: inherit;
-  color: inherit;
-  cursor: pointer;
-}
-
-.custom-button-reset:focus {
-  outline: none;
-}
-
-/* Visually Hidden (for accessibility) */
-.custom-visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
-}
-
-/* User Select Utilities */
-.custom-select-none {
-  user-select: none;
-}
-
-.custom-select-text {
-  user-select: text;
-}
-
-.custom-select-all {
-  user-select: all;
+  color: #ffffff;
 }
 
 /* Cursor Utilities */
-.custom-cursor-pointer {
-  cursor: pointer;
-}
-
 .custom-cursor-grab {
   cursor: grab;
 }
@@ -331,62 +205,16 @@ img {
   }
 }
 
-/* Object Fit Utilities */
-.custom-object-cover {
-  object-fit: cover;
+/* ============================================
+   4. MINIMAL GLOBAL ENHANCEMENTS
+   ============================================ */
+
+/* Smooth Scroll (with respect for reduced motion) */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
-.custom-object-contain {
-  object-fit: contain;
-}
-
-.custom-object-center {
-  object-position: center;
-}
-
-/* Pointer Events */
-.custom-pointer-events-none {
-  pointer-events: none;
-}
-
-.custom-pointer-events-auto {
-  pointer-events: auto;
-}
-
-/* Display Utilities for Custom Sections */
-.custom-flex-center {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.custom-flex-between {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.custom-grid-center {
-  display: grid;
-  place-items: center;
-}
-
-/* Truncate Text */
-.custom-truncate {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* Screen Reader Only */
-.custom-sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
-}
+/* Note: Don't override body font-smoothing - theme may have its own preference */
+/* Note: Don't redefine .visually-hidden - use theme's existing .visually-hidden class */

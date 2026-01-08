@@ -123,7 +123,7 @@ class HeroBannerCustom {
     const liveRegion = document.createElement('div');
     liveRegion.setAttribute('aria-live', 'polite');
     liveRegion.setAttribute('aria-atomic', 'true');
-    liveRegion.className = 'custom-visually-hidden';
+    liveRegion.className = 'visually-hidden';  // Use theme's existing class
     liveRegion.id = `hero-banner-live-${this.banner.id}`;
     this.banner.appendChild(liveRegion);
     this.liveRegion = liveRegion;
