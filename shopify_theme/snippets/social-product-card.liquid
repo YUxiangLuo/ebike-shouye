@@ -1,0 +1,51 @@
+{% comment %}
+  Social Product Card Snippet
+
+  Usage: {% render 'social-product-card', product: product, enable_quick_add: true %}
+{% endcomment %}
+
+<div class="w-full max-w-lg bg-white rounded-[1.5rem] md:rounded-[2.5rem] p-3 md:p-5 shadow-[0_10px_35px_rgba(0,0,0,0.05)] border border-gray-50 flex items-center gap-4 md:gap-6 group/item">
+
+  {%- comment -%} Product Image {%- endcomment -%}
+  {%- if product.featured_image -%}
+    <a href="{{ product.url }}"
+       class="w-14 h-14 md:w-24 md:h-24 bg-gray-50 rounded-[1.2rem] md:rounded-[1.8rem] p-1.5 md:p-3 flex items-center justify-center flex-shrink-0 block">
+      <img src="{{ product.featured_image | image_url: width: 200 }}"
+           alt="{{ product.title | escape }}"
+           class="max-w-full max-h-full object-contain group-hover/item:scale-110 transition-transform duration-500"
+      />
+    </a>
+  {%- endif -%}
+
+  {%- comment -%} Product Info {%- endcomment -%}
+  <div class="flex-1 min-w-0 py-1">
+    <a href="{{ product.url }}"
+       class="block">
+      <h4 class="font-extrabold text-[13px] md:text-[17px] text-[#1a1a1a] leading-[1.3] mb-1 md:mb-2 custom-line-clamp-2 hover:text-[var(--custom-color-primary)] transition-colors">
+        {{ product.title }}
+      </h4>
+    </a>
+
+    <div class="flex flex-col md:flex-row md:items-baseline md:gap-3">
+      <span class="text-[16px] md:text-[22px] font-black text-[var(--custom-color-primary)] leading-none">
+        {{ product.price | money }}
+      </span>
+      {%- if product.compare_at_price > product.price -%}
+        <span class="text-[10px] md:text-[13px] text-gray-300 line-through font-bold opacity-80">
+          {{ product.compare_at_price | money }}
+        </span>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- comment -%} Quick Add Button {%- endcomment -%}
+  {%- if enable_quick_add -%}
+    <button class="w-10 h-10 md:w-14 md:h-14 bg-[var(--custom-color-primary)] text-white rounded-full flex items-center justify-center hover:bg-[var(--custom-color-primary-dark)] transition-all shadow-lg active:scale-90 flex-shrink-0 quick-add-btn"
+            data-product-id="{{ product.variants.first.id }}"
+            aria-label="Add {{ product.title }} to cart">
+      <svg class="w-5 h-5 md:w-7 md:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3">
+        <path d="M12 4.5v15m7.5-7.5h-15"></path>
+      </svg>
+    </button>
+  {%- endif -%}
+</div>

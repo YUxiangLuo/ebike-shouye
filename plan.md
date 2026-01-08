@@ -678,7 +678,7 @@ shopify_theme/
 4. ✅ 开发 `reviews-custom.liquid` + `custom-reviews.js` **[DONE - 2026-01-09]**
 
 ### 第 4 天: 剩余 Sections + 全局 JS
-1. ⏳ 开发 `social-family-custom.liquid`
+1. ✅ 开发 `social-family-custom.liquid` + `custom-social.js` **[DONE - 2026-01-09]**
 2. ⏳ 开发 `help-download-custom.liquid`
 3. ⏳ 创建 `custom-global.js`（拖拽滚动等）
 4. ⏳ 配置 `templates/index.json`
@@ -766,7 +766,7 @@ shopify_theme/
 - [x] **Milestone 1**: 基础设施搭建完成（CSS/JS 框架） ✅ **2026-01-09**
 - [x] **Milestone 2**: 基础可配置型 Sections 完成（Hero, Ticker, Christmas） ✅ **2026-01-09** - **3/3 完成**
 - [x] **Milestone 3**: 数据驱动型 Sections 完成（Best Sellers, Categories, Blog） ✅ **2026-01-09** - **3/3 完成**
-- [ ] **Milestone 4**: 内容展示型 Sections 完成（Feature Video, Reviews, Social, Help） - **2/4 完成**
+- [ ] **Milestone 4**: 内容展示型 Sections 完成（Feature Video, Reviews, Social, Help） - **3/4 完成**
 - [ ] **Milestone 5**: 集成测试通过 + 首页上线
 
 ---
@@ -797,4 +797,7 @@ shopify_theme/
 - 📝 说明：所有sections都支持Theme Customizer配置，没有写死的静态内容
 - ✅ 完成 Reviews Custom (客户评价展示, 星级评分, 导航按钮)
 - ✅ 创建 custom-reviews.js (左右导航按钮, 自动隐藏边界按钮)
-- 📊 进度：8/10 sections 完成 (80%)
+- ✅ 完成 Social Family Custom (Instagram风格, 产品标签, 快速添加购物车)
+- ✅ 创建 custom-social.js (中心缩放, 导航, 展开面板, Ajax购物车)
+- ✅ 创建 social-product-card snippet (产品卡片组件)
+- 📊 进度：9/10 sections 完成 (90%)
