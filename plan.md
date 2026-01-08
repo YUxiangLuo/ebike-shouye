@@ -671,11 +671,11 @@ shopify_theme/
 3. ✅ 开发 `categories-custom.liquid` **[DONE - 2026-01-09]**
 4. ⏳ 测试 Shopify 数据获取
 
-### 第 3 天: 数据驱动型 Sections (Part 2) + 静态 Sections
+### 第 3 天: 数据驱动型 Sections (Part 2) + 内容展示 Sections
 1. ✅ 开发 `blog-section-custom.liquid` **[DONE - 2026-01-09]**
 2. ✅ 开发 `christmas-banner-custom.liquid` **[DONE - 2026-01-09]**
 3. ✅ 开发 `feature-video-custom.liquid` + `custom-video.js` **[DONE - 2026-01-09]**
-4. ⏳ 开发 `reviews-custom.liquid`
+4. ✅ 开发 `reviews-custom.liquid` + `custom-reviews.js` **[DONE - 2026-01-09]**
 
 ### 第 4 天: 剩余 Sections + 全局 JS
 1. ⏳ 开发 `social-family-custom.liquid`
@@ -766,7 +766,7 @@ shopify_theme/
 - [x] **Milestone 1**: 基础设施搭建完成（CSS/JS 框架） ✅ **2026-01-09**
 - [x] **Milestone 2**: 基础可配置型 Sections 完成（Hero, Ticker, Christmas） ✅ **2026-01-09** - **3/3 完成**
 - [x] **Milestone 3**: 数据驱动型 Sections 完成（Best Sellers, Categories, Blog） ✅ **2026-01-09** - **3/3 完成**
-- [ ] **Milestone 4**: 内容展示型 Sections 完成（Feature Video, Reviews, Social, Help） - **1/4 完成**
+- [ ] **Milestone 4**: 内容展示型 Sections 完成（Feature Video, Reviews, Social, Help） - **2/4 完成**
 - [ ] **Milestone 5**: 集成测试通过 + 首页上线
 
 ---
@@ -795,4 +795,6 @@ shopify_theme/
 - ✅ 创建 custom-video.js (视频播放器控制, iframe动态加载)
 - 📝 **修正分类**: Phase 3从"静态内容型（写死内容）"改为"内容展示型（可配置）"
 - 📝 说明：所有sections都支持Theme Customizer配置，没有写死的静态内容
-- 📊 进度：7/10 sections 完成 (70%)
+- ✅ 完成 Reviews Custom (客户评价展示, 星级评分, 导航按钮)
+- ✅ 创建 custom-reviews.js (左右导航按钮, 自动隐藏边界按钮)
+- 📊 进度：8/10 sections 完成 (80%)
