@@ -1,0 +1,446 @@
+{% comment %}
+  Christmas Banner Custom - Seasonal promotional banner
+
+  Features:
+  - Responsive aspect ratios (vertical on mobile, horizontal on desktop)
+  - Configurable icon types (christmas-tree, gift, snowflake, custom SVG, or none)
+  - Multi-stage gradient overlay for text readability
+  - Hover zoom effect on background image
+  - Customizable alignment for mobile and desktop
+  - Fully configurable via Theme Customizer
+{% endcomment %}
+
+{%- if section.settings.enabled -%}
+  <section class="px-4 py-12 md:py-20 md:px-10 lg:px-12 max-w-[var(--custom-container-max-width)] mx-auto">
+    <div class="relative rounded-[var(--custom-radius-2xl)] overflow-hidden
+                {% if section.settings.aspect_ratio_mobile == '3.5/4' %}aspect-[3.5/4]{% elsif section.settings.aspect_ratio_mobile == '4/5' %}aspect-[4/5]{% elsif section.settings.aspect_ratio_mobile == '1/1' %}aspect-square{% endif %}
+                {% if section.settings.aspect_ratio_desktop == '25/9' %}md:aspect-[25/9]{% elsif section.settings.aspect_ratio_desktop == '21/8' %}md:aspect-[21/8]{% elsif section.settings.aspect_ratio_desktop == '16/9' %}md:aspect-video{% endif %}
+                flex
+                {% if section.settings.text_alignment_mobile == 'center' %}items-end justify-center{% elsif section.settings.text_alignment_mobile == 'left' %}items-end justify-start{% else %}items-end justify-end{% endif %}
+                {% if section.settings.text_alignment_desktop == 'left' %}md:items-center md:justify-start{% elsif section.settings.text_alignment_desktop == 'center' %}md:items-center md:justify-center{% else %}md:items-center md:justify-end{% endif %}
+                group"
+         data-christmas-banner>
+
+      {%- comment -%} Background Image with Hover Zoom {%- endcomment -%}
+      {%- if section.settings.background_image != blank -%}
+        <img
+          src="{{ section.settings.background_image | image_url: width: 1920 }}"
+          srcset="{{ section.settings.background_image | image_url: width: 750 }} 750w,
+                  {{ section.settings.background_image | image_url: width: 1100 }} 1100w,
+                  {{ section.settings.background_image | image_url: width: 1500 }} 1500w,
+                  {{ section.settings.background_image | image_url: width: 1920 }} 1920w"
+          sizes="(min-width: 1200px) 1550px, 100vw"
+          class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-[2000ms]"
+          alt="{{ section.settings.title | escape }}"
+          loading="lazy"
+        />
+      {%- else -%}
+        {%- comment -%} Placeholder if no image selected {%- endcomment -%}
+        <div class="absolute inset-0 w-full h-full bg-gradient-to-br from-gray-200 to-gray-300"></div>
+      {%- endif -%}
+
+      {%- comment -%} Multi-Stage Gradient Overlay {%- endcomment -%}
+      <div class="absolute inset-0
+                  {% if section.settings.gradient_mobile == 'bottom' %}bg-gradient-to-t from-black/80 via-black/20 to-transparent{% elsif section.settings.gradient_mobile == 'left' %}bg-gradient-to-r from-black/80 via-black/20 to-transparent{% elsif section.settings.gradient_mobile == 'right' %}bg-gradient-to-l from-black/80 via-black/20 to-transparent{% endif %}
+                  {% if section.settings.gradient_desktop == 'left' %}md:bg-gradient-to-r md:from-black/60 md:via-black/20 md:to-transparent{% elsif section.settings.gradient_desktop == 'right' %}md:bg-gradient-to-l md:from-black/60 md:via-black/20 md:to-transparent{% elsif section.settings.gradient_desktop == 'bottom' %}md:bg-gradient-to-t md:from-black/60 md:via-black/20 md:to-transparent{% endif %}"
+           style="--gradient-opacity: {{ section.settings.gradient_opacity }}%;">
+      </div>
+
+      {%- comment -%} Content Container {%- endcomment -%}
+      <div class="relative z-10 text-white p-10 md:pl-16 lg:pl-24 max-w-2xl
+                  {% if section.settings.text_alignment_mobile == 'center' %}text-center{% elsif section.settings.text_alignment_mobile == 'left' %}text-left{% else %}text-right{% endif %}
+                  {% if section.settings.text_alignment_desktop == 'left' %}md:text-left{% elsif section.settings.text_alignment_desktop == 'center' %}md:text-center{% else %}md:text-right{% endif %}
+                  flex flex-col
+                  {% if section.settings.text_alignment_mobile == 'center' %}items-center{% elsif section.settings.text_alignment_mobile == 'left' %}items-start{% else %}items-end{% endif %}
+                  {% if section.settings.text_alignment_desktop == 'left' %}md:items-start{% elsif section.settings.text_alignment_desktop == 'center' %}md:items-center{% else %}md:items-end{% endif %}">
+
+        {%- comment -%} Icon {%- endcomment -%}
+        {%- if section.settings.icon_type != 'none' -%}
+          <div class="mb-2 md:mb-4">
+            {%- case section.settings.icon_type -%}
+              {%- when 'christmas-tree' -%}
+                <svg class="w-8 h-8 md:w-10 md:h-10 text-white drop-shadow-md" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2L4 18H9V22H15V18H20L12 2Z" />
+                </svg>
+
+              {%- when 'gift' -%}
+                <svg class="w-8 h-8 md:w-10 md:h-10 text-white drop-shadow-md" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="8" width="18" height="4" rx="1"/>
+                  <rect x="4" y="12" width="16" height="9" rx="1"/>
+                  <path d="M12 8V21"/>
+                  <path d="M12 8C12 6.5 10.5 5 9 5C7.5 5 6 6.5 6 8"/>
+                  <path d="M12 8C12 6.5 13.5 5 15 5C16.5 5 18 6.5 18 8"/>
+                </svg>
+
+              {%- when 'snowflake' -%}
+                <svg class="w-8 h-8 md:w-10 md:h-10 text-white drop-shadow-md" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M4.93 19.07L19.07 4.93"/>
+                  <path d="M12 6l-2 2 2 2 2-2-2-2zM12 18l-2-2 2-2 2 2-2 2z"/>
+                  <path d="M6 12l-2-2 2-2 2 2-2 2zM18 12l-2-2 2-2 2 2-2 2z"/>
+                </svg>
+
+              {%- when 'custom' -%}
+                {%- if section.settings.custom_icon_svg != blank -%}
+                  <div class="w-8 h-8 md:w-10 md:h-10 text-white drop-shadow-md">
+                    {{ section.settings.custom_icon_svg }}
+                  </div>
+                {%- endif -%}
+            {%- endcase -%}
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} Title {%- endcomment -%}
+        {%- if section.settings.title != blank -%}
+          <h2 class="text-[42px] md:text-7xl lg:text-8xl
+                     font-family: var(--font-heading-family);
+                     italic mb-2 md:mb-4 tracking-tight drop-shadow-2xl leading-[1.1]"
+              style="color: {{ section.settings.title_color }};">
+            {{ section.settings.title }}
+          </h2>
+        {%- endif -%}
+
+        {%- comment -%} Subtitle {%- endcomment -%}
+        {%- if section.settings.subtitle != blank -%}
+          <p class="text-[13px] md:text-2xl font-bold mb-8 md:mb-10 drop-shadow-md opacity-95 tracking-wide max-w-[280px] md:max-w-none leading-relaxed"
+             style="color: {{ section.settings.subtitle_color }};">
+            {{ section.settings.subtitle }}
+          </p>
+        {%- endif -%}
+
+        {%- comment -%} Call-to-Action Button {%- endcomment -%}
+        {%- if section.settings.button_text != blank -%}
+          <a href="{{ section.settings.button_link | default: '#' }}"
+             class="inline-flex items-center gap-2.5 px-8 md:px-10 py-3.5 md:py-4
+                    rounded-full font-black text-[12px] md:text-base tracking-[0.1em]
+                    transition-all shadow-xl hover:scale-105 active:scale-95
+                    uppercase border border-white/10 backdrop-blur-sm"
+             style="background-color: {{ section.settings.button_color }};
+                    color: {{ section.settings.button_text_color }};"
+             {% if section.settings.button_link == blank %}aria-disabled="true"{% endif %}>
+
+            {%- if section.settings.button_icon == 'cart' -%}
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+              </svg>
+            {%- elsif section.settings.button_icon == 'arrow' -%}
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+              </svg>
+            {%- elsif section.settings.button_icon == 'gift' -%}
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                <rect x="3" y="8" width="18" height="4" rx="1"/>
+                <rect x="4" y="12" width="16" height="9" rx="1"/>
+                <path d="M12 8V21"/>
+              </svg>
+            {%- endif -%}
+
+            {{ section.settings.button_text }}
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Christmas Banner Custom",
+  "tag": "section",
+  "class": "christmas-banner-custom-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enabled",
+      "label": "Enable this banner",
+      "default": true,
+      "info": "Toggle to show/hide this section"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image",
+      "info": "Recommended size: 1920x800px for best quality"
+    },
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "select",
+      "id": "aspect_ratio_mobile",
+      "label": "Aspect ratio (Mobile)",
+      "options": [
+        {
+          "value": "3.5/4",
+          "label": "3.5:4 (Portrait)"
+        },
+        {
+          "value": "4/5",
+          "label": "4:5 (Tall)"
+        },
+        {
+          "value": "1/1",
+          "label": "1:1 (Square)"
+        }
+      ],
+      "default": "3.5/4"
+    },
+    {
+      "type": "select",
+      "id": "aspect_ratio_desktop",
+      "label": "Aspect ratio (Desktop)",
+      "options": [
+        {
+          "value": "25/9",
+          "label": "25:9 (Ultra-wide)"
+        },
+        {
+          "value": "21/8",
+          "label": "21:8 (Wide)"
+        },
+        {
+          "value": "16/9",
+          "label": "16:9 (Standard)"
+        }
+      ],
+      "default": "25/9"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment_mobile",
+      "label": "Text alignment (Mobile)",
+      "options": [
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment_desktop",
+      "label": "Text alignment (Desktop)",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Gradient Overlay"
+    },
+    {
+      "type": "select",
+      "id": "gradient_mobile",
+      "label": "Gradient direction (Mobile)",
+      "options": [
+        {
+          "value": "bottom",
+          "label": "From bottom"
+        },
+        {
+          "value": "left",
+          "label": "From left"
+        },
+        {
+          "value": "right",
+          "label": "From right"
+        }
+      ],
+      "default": "bottom",
+      "info": "Direction of gradient overlay for better text readability"
+    },
+    {
+      "type": "select",
+      "id": "gradient_desktop",
+      "label": "Gradient direction (Desktop)",
+      "options": [
+        {
+          "value": "left",
+          "label": "From left"
+        },
+        {
+          "value": "right",
+          "label": "From right"
+        },
+        {
+          "value": "bottom",
+          "label": "From bottom"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "gradient_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Gradient opacity",
+      "default": 80,
+      "info": "Adjust darkness of the overlay"
+    },
+    {
+      "type": "header",
+      "content": "Icon"
+    },
+    {
+      "type": "select",
+      "id": "icon_type",
+      "label": "Icon type",
+      "options": [
+        {
+          "value": "christmas-tree",
+          "label": "Christmas Tree"
+        },
+        {
+          "value": "gift",
+          "label": "Gift Box"
+        },
+        {
+          "value": "snowflake",
+          "label": "Snowflake"
+        },
+        {
+          "value": "custom",
+          "label": "Custom SVG"
+        },
+        {
+          "value": "none",
+          "label": "No icon"
+        }
+      ],
+      "default": "christmas-tree"
+    },
+    {
+      "type": "html",
+      "id": "custom_icon_svg",
+      "label": "Custom icon SVG",
+      "info": "Only used when Icon type is set to 'Custom SVG'. Paste SVG code here."
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Christmas Sale"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Free Christmas Gift Pack + Extra 10€ stacked coupon",
+      "info": "Short promotional message"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Call-to-Action Button"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "ORDER NOW"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link",
+      "info": "Leave empty to disable button"
+    },
+    {
+      "type": "select",
+      "id": "button_icon",
+      "label": "Button icon",
+      "options": [
+        {
+          "value": "cart",
+          "label": "Shopping Cart"
+        },
+        {
+          "value": "arrow",
+          "label": "Arrow"
+        },
+        {
+          "value": "gift",
+          "label": "Gift"
+        },
+        {
+          "value": "none",
+          "label": "No icon"
+        }
+      ],
+      "default": "cart"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button background color",
+      "default": "#004d43"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text color",
+      "default": "#ffffff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Christmas Banner Custom",
+      "settings": {
+        "enabled": true,
+        "title": "Christmas Sale",
+        "subtitle": "Free Christmas Gift Pack + Extra 10€ stacked coupon",
+        "button_text": "ORDER NOW",
+        "button_color": "#004d43",
+        "icon_type": "christmas-tree",
+        "text_alignment_mobile": "center",
+        "text_alignment_desktop": "left",
+        "aspect_ratio_mobile": "3.5/4",
+        "aspect_ratio_desktop": "25/9"
+      }
+    }
+  ]
+}
+{% endschema %}

@@ -655,8 +655,8 @@ shopify_theme/
 1. ✅ 创建 `custom-base.css` **[DONE - 2026-01-09]**
 2. ✅ 创建 `custom-animations.css` **[DONE - 2026-01-09]**
 3. ✅ 开发 `hero-banner-custom.liquid` + `custom-hero.js` **[DONE - 2026-01-09]**
-4. ⏳ 开发 `promo-ticker-custom.liquid`
-5. ⏳ 测试响应式和基础功能
+4. ✅ 开发 `promo-ticker-custom.liquid` **[DONE - 2026-01-09]**
+5. ⏳ 测试响应式和基础功能（需上传到 Shopify）
 
 ### 第 2 天: 数据驱动型 Sections (Part 1)
 1. ⏳ 开发 `best-sellers-custom.liquid`
@@ -666,7 +666,7 @@ shopify_theme/
 
 ### 第 3 天: 数据驱动型 Sections (Part 2) + 静态 Sections
 1. ⏳ 开发 `blog-section-custom.liquid`
-2. ⏳ 开发 `christmas-banner-custom.liquid`
+2. ✅ 开发 `christmas-banner-custom.liquid` **[DONE - 2026-01-09]**
 3. ⏳ 开发 `feature-video-custom.liquid`
 4. ⏳ 开发 `reviews-custom.liquid`
 
@@ -757,16 +757,16 @@ shopify_theme/
 ## 项目里程碑
 
 - [x] **Milestone 1**: 基础设施搭建完成（CSS/JS 框架） ✅ **2026-01-09**
-- [ ] **Milestone 2**: 可配置型 Sections 完成（Hero, Ticker, Christmas） - **1/3 完成**
+- [x] **Milestone 2**: 可配置型 Sections 完成（Hero, Ticker, Christmas） ✅ **2026-01-09** - **3/3 完成**
 - [ ] **Milestone 3**: 数据驱动型 Sections 完成（Best Sellers, Categories, Blog）
 - [ ] **Milestone 4**: 静态内容型 Sections 完成（剩余 4 个）
 - [ ] **Milestone 5**: 集成测试通过 + 首页上线
 
 ---
 
-**文档版本**: v1.1
+**文档版本**: v1.2
 **创建日期**: 2026-01-09
-**最后更新**: 2026-01-09 (Hero Banner 完成)
+**最后更新**: 2026-01-09 (Christmas Banner 完成, Milestone 2 完成)
 **负责人**: Alice
 **预计完成日期**: 2026-01-14
 
@@ -775,4 +775,8 @@ shopify_theme/
 ### 2026-01-09
 - ✅ 完成基础设施：custom-base.css, custom-animations.css
 - ✅ 完成 Hero Banner Custom section (含 custom-hero.js)
-- 📊 进度：1/10 sections 完成 (10%)
+- ✅ 重构 CSS 架构 (393行→220行, -44%)
+- ✅ 完成 Promo Ticker Custom section (CSS-only animation)
+- ✅ 完成 Christmas Banner Custom section (响应式aspect-ratio, 多级渐变)
+- 🎯 **Milestone 2 完成**: 3个可配置型sections全部完成 (Hero, Ticker, Christmas)
+- 📊 进度：3/10 sections 完成 (30%)
