@@ -679,9 +679,9 @@ shopify_theme/
 
 ### 第 4 天: 剩余 Sections + 全局 JS
 1. ✅ 开发 `social-family-custom.liquid` + `custom-social.js` **[DONE - 2026-01-09]**
-2. ⏳ 开发 `help-download-custom.liquid`
-3. ⏳ 创建 `custom-global.js`（拖拽滚动等）
-4. ⏳ 配置 `templates/index.json`
+2. ✅ 开发 `help-download-custom.liquid` **[DONE - 2026-01-09]**
+3. ✅ 创建 `custom-global.js`（拖拽滚动等）**[DONE - 2026-01-09]**
+4. ✅ 配置 `templates/index.json` **[DONE - 2026-01-09]**
 
 ### 第 5 天: 测试 + 优化 + 文档
 1. ⏳ 完整功能测试（所有 sections）
@@ -766,16 +766,17 @@ shopify_theme/
 - [x] **Milestone 1**: 基础设施搭建完成（CSS/JS 框架） ✅ **2026-01-09**
 - [x] **Milestone 2**: 基础可配置型 Sections 完成（Hero, Ticker, Christmas） ✅ **2026-01-09** - **3/3 完成**
 - [x] **Milestone 3**: 数据驱动型 Sections 完成（Best Sellers, Categories, Blog） ✅ **2026-01-09** - **3/3 完成**
-- [ ] **Milestone 4**: 内容展示型 Sections 完成（Feature Video, Reviews, Social, Help） - **3/4 完成**
-- [ ] **Milestone 5**: 集成测试通过 + 首页上线
+- [x] **Milestone 4**: 内容展示型 Sections 完成（Feature Video, Reviews, Social, Help） ✅ **2026-01-09** - **4/4 完成**
+- [ ] **Milestone 5**: 集成测试通过 + 首页上线 - **待 Shopify 环境测试**
 
 ---
 
-**文档版本**: v1.3
+**文档版本**: v2.0
 **创建日期**: 2026-01-09
-**最后更新**: 2026-01-09 (Feature Video 完成, 修正分类)
+**最后更新**: 2026-01-09 (开发阶段 100% 完成)
 **负责人**: Alice
-**预计完成日期**: 2026-01-14
+**开发完成日期**: 2026-01-09
+**预计上线日期**: 2026-01-14 (待 Shopify 环境测试)
 
 ## 更新日志
 
@@ -800,4 +801,8 @@ shopify_theme/
 - ✅ 完成 Social Family Custom (Instagram风格, 产品标签, 快速添加购物车)
 - ✅ 创建 custom-social.js (中心缩放, 导航, 展开面板, Ajax购物车)
 - ✅ 创建 social-product-card snippet (产品卡片组件)
-- 📊 进度：9/10 sections 完成 (90%)
+- ✅ 完成 Help & Download Custom (帮助资源, 下载中心, 8种预设图标)
+- ✅ 创建 custom-global.js (懒加载, 平滑滚动, 滚动到顶部按钮, viewport fix)
+- ✅ 配置 templates/index.json (整合所有10个sections)
+- 🎯 **Milestone 4 完成**: 4个内容展示型sections全部完成 (Feature Video, Reviews, Social, Help)
+- 🎉 **开发阶段 100% 完成**: 所有10个sections + 所有JS/CSS资源 + 首页模板配置

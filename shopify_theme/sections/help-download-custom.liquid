@@ -1,0 +1,249 @@
+{% comment %}
+  Help & Download Custom - Help resources and download center
+
+  Features:
+  - Help resources and download links
+  - Icon + text card layout
+  - User manual, app downloads, FAQ links
+  - Configurable background color
+  - Responsive grid layout
+  - Customizable icons (preset or custom SVG)
+{% endcomment %}
+
+<section class="py-12 md:py-20 overflow-hidden"
+         style="background-color: {{ section.settings.background_color }};">
+
+  {%- comment -%} Section Title {%- endcomment -%}
+  <div class="max-w-[var(--custom-container-max-width)] mx-auto px-6 mb-8 md:mb-12">
+    {%- if section.settings.title != blank -%}
+      <h2 class="text-[24px] md:text-[36px] font-black text-[#1a1a1a] tracking-tight text-center"
+          style="font-family: var(--font-heading-family);">
+        {{ section.settings.title }}
+      </h2>
+    {%- endif -%}
+    {%- if section.settings.subtitle != blank -%}
+      <p class="text-[14px] md:text-[16px] text-[#666666] text-center mt-3 md:mt-4 max-w-3xl mx-auto">
+        {{ section.settings.subtitle }}
+      </p>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%} Resources Grid {%- endcomment -%}
+  <div class="max-w-[var(--custom-container-max-width)] mx-auto px-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-{{ section.settings.columns_desktop }} gap-4 md:gap-6">
+
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign icon_type = block.settings.icon_type
+          assign resource_title = block.settings.title
+          assign description = block.settings.description
+          assign link = block.settings.link
+          assign button_text = block.settings.button_text | default: 'Learn More'
+        -%}
+
+        <div class="bg-white rounded-[2rem] md:rounded-[2.5rem] p-6 md:p-8 border border-gray-100 shadow-[0_10px_40px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.12)] transition-all duration-300 flex flex-col"
+             {{ block.shopify_attributes }}>
+
+          {%- comment -%} Icon {%- endcomment -%}
+          <div class="mb-5 md:mb-6">
+            <div class="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-[#004d43]/5 flex items-center justify-center">
+              {%- case icon_type -%}
+                {%- when 'download' -%}
+                  <svg class="w-7 h-7 md:w-8 md:h-8 text-[#004d43]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path>
+                  </svg>
+                {%- when 'manual' -%}
+                  <svg class="w-7 h-7 md:w-8 md:h-8 text-[#004d43]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                  </svg>
+                {%- when 'app' -%}
+                  <svg class="w-7 h-7 md:w-8 md:h-8 text-[#004d43]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                  </svg>
+                {%- when 'faq' -%}
+                  <svg class="w-7 h-7 md:w-8 md:h-8 text-[#004d43]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                {%- when 'support' -%}
+                  <svg class="w-7 h-7 md:w-8 md:h-8 text-[#004d43]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                  </svg>
+                {%- when 'video' -%}
+                  <svg class="w-7 h-7 md:w-8 md:h-8 text-[#004d43]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                {%- when 'chat' -%}
+                  <svg class="w-7 h-7 md:w-8 md:h-8 text-[#004d43]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                  </svg>
+                {%- when 'custom' -%}
+                  {%- if block.settings.icon_svg != blank -%}
+                    {{ block.settings.icon_svg }}
+                  {%- else -%}
+                    {%- comment -%} Default icon if custom SVG not provided {%- endcomment -%}
+                    <svg class="w-7 h-7 md:w-8 md:h-8 text-[#004d43]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                  {%- endif -%}
+              {%- endcase -%}
+            </div>
+          </div>
+
+          {%- comment -%} Content {%- endcomment -%}
+          <div class="flex-grow">
+            {%- if resource_title != blank -%}
+              <h3 class="text-[18px] md:text-[22px] font-black text-[#1a1a1a] tracking-tight mb-2.5 md:mb-3"
+                  style="font-family: var(--font-heading-family);">
+                {{ resource_title }}
+              </h3>
+            {%- endif -%}
+
+            {%- if description != blank -%}
+              <p class="text-[13px] md:text-[15px] text-[#666666] leading-relaxed mb-5 md:mb-6">
+                {{ description }}
+              </p>
+            {%- endif -%}
+          </div>
+
+          {%- comment -%} Button {%- endcomment -%}
+          {%- if link != blank -%}
+            <a href="{{ link }}"
+               class="inline-flex items-center justify-center gap-2 px-5 py-2.5 md:px-6 md:py-3 bg-[#004d43] text-white text-[13px] md:text-[14px] font-black tracking-tight rounded-full hover:bg-[#003d35] transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-sm hover:shadow-md"
+               style="font-family: var(--font-heading-family);">
+              <span>{{ button_text }}</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
+              </svg>
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Help & Download Custom",
+  "tag": "section",
+  "class": "help-download-custom",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Help & Resources"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Find everything you need to get the most out of your experience"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#f9f9f9"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "label": "Columns (Desktop)",
+      "default": 3
+    }
+  ],
+  "blocks": [
+    {
+      "type": "resource",
+      "name": "Resource",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon_type",
+          "label": "Icon Type",
+          "options": [
+            { "value": "download", "label": "Download" },
+            { "value": "manual", "label": "User Manual" },
+            { "value": "app", "label": "Mobile App" },
+            { "value": "faq", "label": "FAQ" },
+            { "value": "support", "label": "Support" },
+            { "value": "video", "label": "Video Tutorial" },
+            { "value": "chat", "label": "Live Chat" },
+            { "value": "custom", "label": "Custom SVG" }
+          ],
+          "default": "download"
+        },
+        {
+          "type": "html",
+          "id": "icon_svg",
+          "label": "Custom SVG Icon",
+          "info": "Only used if Icon Type is set to 'Custom SVG'. Paste your SVG code here."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Resource Title",
+          "default": "User Manual"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Download our comprehensive user manual with step-by-step guides and troubleshooting tips."
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "Download"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Help & Download Custom",
+      "blocks": [
+        {
+          "type": "resource",
+          "settings": {
+            "icon_type": "manual",
+            "title": "User Manual",
+            "description": "Download our comprehensive user manual with step-by-step guides and troubleshooting tips.",
+            "button_text": "Download PDF"
+          }
+        },
+        {
+          "type": "resource",
+          "settings": {
+            "icon_type": "app",
+            "title": "Mobile App",
+            "description": "Get the most out of your experience with our mobile app, available for iOS and Android.",
+            "button_text": "Get the App"
+          }
+        },
+        {
+          "type": "resource",
+          "settings": {
+            "icon_type": "faq",
+            "title": "FAQ",
+            "description": "Find answers to the most common questions about our products and services.",
+            "button_text": "View FAQ"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
