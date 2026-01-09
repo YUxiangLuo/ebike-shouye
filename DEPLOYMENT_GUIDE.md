@@ -29,11 +29,12 @@ shopify_theme/sections/
 └── help-download-custom.liquid        ✅ 帮助资源
 ```
 
-### Assets (9 个)
+### Assets (10 个)
 ```
 shopify_theme/assets/
-├── custom-base.css                    ✅ 全局样式
-├── custom-animations.css              ✅ 动画库
+├── custom-base.css                    ✅ 全局样式（CSS变量）
+├── custom-animations.css              ✅ 动画库（@keyframes）
+├── custom-utilities.css               ✅ 工具类库（800+ Tailwind风格类）⭐ NEW
 ├── custom-hero.js                     ✅ Hero 交互
 ├── custom-product-card.js             ✅ 产品卡片交互
 ├── custom-video.js                    ✅ 视频播放器
@@ -41,6 +42,8 @@ shopify_theme/assets/
 ├── custom-social.js                   ✅ 社交图片交互
 └── custom-global.js                   ✅ 全局工具
 ```
+
+**⭐ 重要更新**: 已添加 `custom-utilities.css` 包含完整的 Tailwind 风格工具类，确保所有 sections 样式正确显示！
 
 ### Snippets (1 个)
 ```
@@ -254,21 +257,37 @@ shopify_theme/templates/
 
 ### 问题 4: CSS 样式不生效
 
-**原因**: CSS 文件未正确上传或缓存问题
+**原因**: CSS 文件未正确上传或缺少工具类库
 
 **解决**:
-1. 确认 `custom-base.css` 和 `custom-animations.css` 已上传到 `assets` 文件夹
-2. 清除浏览器缓存（Ctrl+Shift+R 或 Cmd+Shift+R）
-3. 检查浏览器控制台是否有 CSS 加载错误
+1. ⭐ 确认 `custom-utilities.css` 已上传（最重要！包含所有样式类）
+2. 确认 `custom-base.css` 和 `custom-animations.css` 已上传到 `assets` 文件夹
+3. 确认 `layout/theme.liquid` 包含以下引用（第261-263行）：
+   ```liquid
+   {{ 'custom-base.css' | asset_url | stylesheet_tag }}
+   {{ 'custom-animations.css' | asset_url | stylesheet_tag }}
+   {{ 'custom-utilities.css' | asset_url | stylesheet_tag }}
+   ```
+4. 清除浏览器缓存（Ctrl+Shift+R 或 Cmd+Shift+R）
+5. 检查浏览器控制台是否有 CSS 加载错误
 
 ### 问题 5: JavaScript 功能不工作
 
-**原因**: JS 文件未上传或有语法错误
+**原因**: JS 文件未上传或未在 theme.liquid 中引用
 
 **解决**:
-1. 确认所有 `.js` 文件已上传到 `assets` 文件夹
-2. 打开浏览器控制台（F12）查看错误信息
-3. 确保主题支持现代 JavaScript（ES6+）
+1. 确认所有 6 个 `.js` 文件已上传到 `assets` 文件夹
+2. 确认 `layout/theme.liquid` 在 `</body>` 前包含以下引用（第379-384行）：
+   ```liquid
+   <script src="{{ 'custom-hero.js' | asset_url }}" defer="defer"></script>
+   <script src="{{ 'custom-product-card.js' | asset_url }}" defer="defer"></script>
+   <script src="{{ 'custom-video.js' | asset_url }}" defer="defer"></script>
+   <script src="{{ 'custom-reviews.js' | asset_url }}" defer="defer"></script>
+   <script src="{{ 'custom-social.js' | asset_url }}" defer="defer"></script>
+   <script src="{{ 'custom-global.js' | asset_url }}" defer="defer"></script>
+   ```
+3. 打开浏览器控制台（F12）查看错误信息
+4. 确保主题支持现代 JavaScript（ES6+）
 
 ---
 

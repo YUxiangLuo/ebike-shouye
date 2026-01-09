@@ -82,10 +82,11 @@ check_file "shopify_theme/sections/social-family-custom.liquid" "9. Social Famil
 check_file "shopify_theme/sections/help-download-custom.liquid" "10. Help & Download Custom"
 echo ""
 
-echo "🎨 检查 CSS 资源 (2/2)..."
+echo "🎨 检查 CSS 资源 (3/3)..."
 echo "---"
 check_file "shopify_theme/assets/custom-base.css" "custom-base.css (全局样式)"
 check_file "shopify_theme/assets/custom-animations.css" "custom-animations.css (动画库)"
+check_file "shopify_theme/assets/custom-utilities.css" "custom-utilities.css (工具类库) ⭐"
 echo ""
 
 echo "⚡ 检查 JavaScript 资源 (6/6)..."
